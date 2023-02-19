@@ -4,10 +4,12 @@ import fun.xb.easyorm.util.*;
 import fun.xb.easyorm.util.*;
 import fun.xb.easyorm.util.*;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,11 +77,33 @@ public class EasySession implements Session{
         String sql="insert into "+tableName+into+" values "+values;
         T t= null;
         try {
-            t = qr.insert(sql,new BeanHandler<T>((Class<? extends T>) dto.getClass()),columnValueS.stream().toArray());
+            t = (T) qr.insert(sql, new ResultSetHandler() {
+                @Override
+                public T handle(ResultSet rs) throws SQLException {
+                    if(rs.next()){
+                        try {
+                            T t= (T) dto.getClass().getDeclaredConstructor().newInstance();
+                            DTOUtil.setId(dto,rs.getInt(1));
+                            return  t;
+                        } catch (InstantiationException e) {
+                            throw new RuntimeException(e);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        } catch (InvocationTargetException e) {
+                            throw new RuntimeException(e);
+                        } catch (NoSuchMethodException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+                    return null;
+                }
+            },columnValueS.stream().toArray());
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        POJOUtil.copyProperties(t,dto);
+        POJOUtil.copyProperties(dto,t);
         return t;
     }
 

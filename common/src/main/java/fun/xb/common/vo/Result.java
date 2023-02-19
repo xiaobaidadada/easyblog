@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @param <T>
  */
 @Data
-public class Result<T> implements Serializable {
+public class Result<T>  {
 
     /**
      * 成功与失败标志
@@ -25,6 +25,38 @@ public class Result<T> implements Serializable {
     状态信息
      */
     private String smg;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getSmg() {
+        return smg;
+    }
+
+    public void setSmg(String smg) {
+        this.smg = smg;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
 
     /**
      * 返回的对象信息

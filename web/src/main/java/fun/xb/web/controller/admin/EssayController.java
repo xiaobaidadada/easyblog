@@ -42,15 +42,13 @@ public class EssayController {
     public Result upload(EssayVO essay) {
         blog blog = new blog();
         essay.verify();
-        POJOUtil.copyProperties(essay, blog);
+        POJOUtil.copyProperties(essay, blog,(v,o)->{
+            o.setType_id(v.getType());
+        });
         blog.setId(null);
         if(essay.getId()==-1){
-            if(session.insert(blog).getId()!=-1){
-                Result.sucess();
-            }
-            else {
-                return Result.fail();
-            }
+            session.insert(essay);
+            return Result.sucess(essay.getId());
         }
         else {
             if(session.updateById(blog)!=0){
@@ -60,7 +58,6 @@ public class EssayController {
                 return Result.fail();
             }
         }
-        return Result.fail();
     }
 
     /**
@@ -70,7 +67,7 @@ public class EssayController {
      * @return
      */
     @PostMapping("/del")
-    public Result delte(Long id) {
+    public Result delte(Integer id) {
         blog blog = new blog();
         blog.setId(id);
         if(id!=null){
@@ -90,18 +87,23 @@ public class EssayController {
      * @return
      */
     @GetMapping("getP")
-    public Result<Page> getPage() {
-        //todo
-        return Result.sucess();
+    public Result<Page> getPage(Integer size,Integer num) {
+        fun.xb.easyorm.util.Page<type> p=new fun.xb.easyorm.util.Page();
+        p.setNum(num);
+        p.setSize(size);
+        session.selectPage("select * from type where id=?", type.class,p);
+        Page page1=new Page<>();
+        POJOUtil.copyProperties(p,page1);
+        return Result.sucess(page1);
     }
 
     /**
      * 获取单个详情
      */
     @GetMapping("get")
-    public Result get(String id) {
-        //todo
-        return Result.sucess();
+    public Result get(Integer id) {
+        List<type> list=session.select("select * from blog where id=?", type.class,id);
+        return Result.sucess(list.get(0));
     }
 
     /**

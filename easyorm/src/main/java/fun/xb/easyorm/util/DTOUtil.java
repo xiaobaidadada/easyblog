@@ -211,4 +211,40 @@ public class DTOUtil {
 
 
     }
+
+    /**
+     * 为对象的id字段进行赋值
+     * @param dto
+     * @return
+     * @throws IllegalAccessException
+     */
+    public static void setId(Object dto,Object value) throws IllegalAccessException {
+        Object id=null;
+        List<Field> list = Arrays.asList(dto.getClass().getDeclaredFields());
+        for (Field f:list) {
+            boolean br=false;
+
+            for (Annotation ann: f.getAnnotations()) {
+                if (ann.annotationType().equals(id.class) ){//插入跳过id
+                    f.setAccessible(true);
+                    f.set(dto,value);
+                    br=true;
+                    break;
+                }
+            }
+            if(br){
+                break;
+            }else {
+                f.setAccessible(true);
+                if(f.getName().equals("id")){
+
+                    f.set(dto,value);
+
+                }
+            }
+
+        }
+
+    }
+
 }

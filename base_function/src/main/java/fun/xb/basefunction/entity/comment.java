@@ -2,16 +2,19 @@ package fun.xb.basefunction.entity;
 
 
 import lombok.Data;
+import fun.xb.easyorm.service.annotation.id;
 
 @Data
 public class comment {
-    Long id;
+
+    @id
+    Integer id;
 
     String context;
 
-    Long father_id;
+    Integer father_id;
 
-    Long time;
+    String time;
 
-    Long blog_id;
+    Integer blog_id;
 }

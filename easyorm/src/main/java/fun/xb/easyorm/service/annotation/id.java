@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE})//可以注解在参数上，注解上
 public @interface id {
 
-    public String value() ;
+    public String value() default "id";
 }

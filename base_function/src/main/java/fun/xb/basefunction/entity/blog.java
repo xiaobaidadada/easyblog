@@ -1,20 +1,22 @@
 package fun.xb.basefunction.entity;
 
 import lombok.Data;
+import fun.xb.easyorm.service.annotation.id;
+
 
 @Data
 public class blog {
 
-
-    Long id;
+    @id
+    Integer id;
 
     String title;
 
     String context;
 
-    Long time_created;
+    String time_created;
 
-    Long time_update;
+    String time_update;
 
-    Long type;
+    Integer type_id;
 }

@@ -28,20 +28,22 @@ public class TypeController {
      * 保存或者修改接口
      */
     @PostMapping("/save")
-    public Result upload(Long id, String type_name) {//参数分别是id和类型名
+    public Result upload(Integer id, String type_name) {//参数分别是id和类型名
         type t=new type();
         t.setId(id);
         t.setType_name(type_name);
         if(id!=-1){
-            session.updateById(t);
+           int i= session.updateById(t);
+           if(i!=0){
+               return Result.sucess();
+           }
         }
         else {
-            t.setId(null);
-            session.insert(t);
-            System.out.println(t.getId());
-        }
 
-        return Result.sucess();
+           return Result.sucess(session.insert(t).getId()) ;
+
+        }
+        return Result.fail();
     }
 
     /**
@@ -51,9 +53,14 @@ public class TypeController {
      * @return
      */
     @PostMapping("/del")
-    public Result delte(Long id) {
-        //todo
-        return Result.sucess();
+    public Result delte(Integer id) {
+        type t=new type();
+        t.setId(id);
+        if(session.deleteById(t)!=0){
+            return Result.sucess();
+        }
+        return Result.fail();
+
     }
 
     /**
@@ -63,16 +70,17 @@ public class TypeController {
      */
     @GetMapping("getA")
     public Result<List> getAll() {
-        //todo
-        return Result.sucess();
+        List<type> list=session.select("select * from type ", type.class);
+
+        return Result.sucess(list);
     }
 
     /**
      * 获取单个详情
      */
     @GetMapping("get")
-    public Result get(String id) {
-        //todo
-        return Result.sucess();
+    public Result get(Integer id) {
+        List<type> list=session.select("select * from type where id=?", type.class,id);
+        return Result.sucess(list.get(0));
     }
 }
