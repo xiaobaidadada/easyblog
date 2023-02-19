@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>测试md文件</title>
+
+    <link rel="stylesheet" href="../static/css/markdown.css">
+    <!--    <link rel="stylesheet" href="../static/css/blog.css">-->
+    <link rel="stylesheet" href="../static/js/prism/prism.css">
+    <script src="../static/js/prism/prism.js"></script>
+
+
+</head>
+
+<body>
+
+    <div class="kk">
+        <h1>关系web的 MVC框架建立在servet上</h1>
+
+        需要运行在servelt容器中
+        <h1>注册dispatcherservlet</h1>
+        <div class="md_order">
+            1. web.xml注册</div>
+        <div class="md_order">2. java配置</div>
+
+        <div class="md_spline"></div>
+
+        一个dispathcherservlet需要一个WebApplicationContext类型的spring ioc核心容器作为参数；
+        <div class="md_disorder"> servlet容器上下文</div>
+        <div class="md_disorder"> dispatcherservelt分发器</div>
+        <div class="md_disorder"> web版的spring ioc 核心容器</div>
+
+        这三者要联系在一起；才可以完成配置；
+        <h2>通过servelt容器接口 （java配置）</h2>
+
+        这个类是servlet3.1版本容器提供的功能，他会扫描有没有实现了这些接口的类；
+
+        <pre class="md_code  language-java" />
+        public class MyWebApplicationInitializer implements WebApplicationInitializer {
+
+        @Override
+        public void onStartup(ServletContext servletContext) {
+        //这里的serveltcontext是tomcat等servelt容器提供的；
+
+        // Load Spring web application configuration
+        //加载 sping 核心容器
+        AnnotationConfigWebApplicationContext context = new 					    AnnotationConfigWebApplicationContext();
+        context.register(AppConfig.class);
+
+        // Create and register the DispatcherServlet
+        //利用 spring ico核心容器创建一个 dispatcherservelt
+        DispatcherServlet servlet = new DispatcherServlet(context);
+        ServletRegistration.Dynamic registration = servletContext.addServlet("app", servlet);
+        registration.setLoadOnStartup(1);
+        registration.addMapping("/app/*");
+        }
+        }
+        </pre>
+        <h2>通过web.xml配置</h2>
+
+        <pre class="md_code  language-xml" />
+        <web-app>
+
+            <listener>
+                <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+            </listener>
+
+            <context-param>
+                <param-name>contextConfigLocation</param-name>
+                <param-value>/WEB-INF/app-context.xml</param-value>
+                <!--加载spring ioc容器-->
+            </context-param>
+
+            <servlet>
+                <servlet-name>app</servlet-name>
+                <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+                <init-param>
+                    <param-name>contextConfigLocation</param-name>
+                    <!--这个dispatcherservelt的实现也需要 spring ioc核心容器-->
+                    <param-value></param-value>
+                </init-param>
+                <load-on-startup>1</load-on-startup>
+            </servlet>
+
+            <servlet-mapping>
+                <servlet-name>app</servlet-name>
+                <url-pattern>/app/*</url-pattern>
+            </servlet-mapping>
+
+        </web-app>
+        </pre>
+        <h2>封装dispatcherservelt和应用容器上下文来注册dispatcherservelt</h2>
+
+        下面的接口他继承了WebApplicationInitializer 所以这个接口已经具有了 dispatcherservelt和 和servlet容器上下文；
+
+        加载java配置
+
+        <pre class="md_code  language-java" />
+        public class MyWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+        //基于javaconfig
+
+        @Override
+        protected Class<?>[] getRootConfigClasses() {
+        return new Class<?>[] { RootConfig.class };
+        }
+        //这里返回的是spring的ioc注解的 javaconfig配置
+
+        @Override
+        protected Class<?>[] getServletConfigClasses() {
+        return new Class<?>[] { App1Config.class };
+        }
+        //这个返回的是这个dispatcherservelt相关的详细配置，这个和上面的其实没有什么区别
+
+        @Override
+        protected String[] getServletMappings() {
+        return new String[] { "/app1/*" };
+        }
+        }
+        </pre>
+
+        加载xml配置
+
+        <pre class="md_code  language-java" />
+        public class MyWebAppInitializer extends AbstractDispatcherServletInitializer {
+        //基于xml
+        @Override
+        protected WebApplicationContext createRootApplicationContext() {
+        return null;
+        }
+
+        @Override
+        protected WebApplicationContext createServletApplicationContext() {
+        XmlWebApplicationContext cxt = new XmlWebApplicationContext();
+        cxt.setConfigLocation("/WEB-INF/spring/dispatcher-config.xml");
+        return cxt;
+        }
+
+
+
+        @Override
+        protected String[] getServletMappings() {
+        return new String[] { "/" };
+        }
+        }
+        </pre>
+
+
+
+
+
+        <pre class="md_code  language-xml" />
+        <web-app>
+
+            <listener>
+                <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+            </listener>
+
+            <context-param>
+                <param-name>contextConfigLocation</param-name>
+                <param-value>/WEB-INF/root-context.xml</param-value>
+            </context-param>
+
+            <servlet>
+                <servlet-name>app1</servlet-name>
+                <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+                <init-param>
+                    <param-name>contextConfigLocation</param-name>
+                    <param-value>/WEB-INF/app1-context.xml</param-value>
+                </init-param>
+                <load-on-startup>1</load-on-startup>
+            </servlet>
+
+            <servlet-mapping>
+                <servlet-name>app1</servlet-name>
+                <url-pattern>/app1/*</url-pattern>
+            </servlet-mapping>
+
+        </web-app>
+        </pre>
+
+        如果同时注册了多个dispatchservelt，都会起作用，有些组件bean的执行顺序可能会不一样；
+        <h1>写beans</h1>
+        <div class="md_disorder"> 前面已经配置了dispatcherservelt，它也是一个bean，spring mvc的web ioc容器不仅需要这个bean，还需要其它各种bean；这些bean之间可能有关系，都是通过dispatcherservelt来加载检测的；</div>
+        <div class="md_disorder"> 每一个bean都有自己的作用，作用取决于它是什么bean；</div>
+        <h2>用于配置spring mvc的特殊bean</h2>
+        <div class="md_order">
+            1. HandlerMapping</div>
+        <div class="md_order">2. HandlerAdapter</div>
+        <div class="md_order">3. [<span class="md_codeseg" />HandlerExceptionResolver</span>]</div>
+        <div class="md_order">4. ViewResolver</div>
+        <div class="md_order">5. LocaleResolver, LocaleContextResolver</div>
+        <div class="md_order">6. <a class="md_link" href="https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-themeresolver"><span class="md_codeseg" />ThemeResolver</span></a></div>
+        <div class="md_order">7. <a class="md_link" href="https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-multipart"><span class="md_codeseg" />MultipartResolver</span></a></div>
+        <div class="md_order">8. <a class="md_link" href="https://docs.spring.io/spring-framework/docs/current/reference/html/web.html#mvc-flash-attributes"><span class="md_codeseg" />FlashMapManager</span></a></div>
+        <h2>一些bean：</h2>
+        <h3>配置错误界面：</h3>
+
+        <pre class="md_code  language-java" />
+        @RestController
+        public class ErrorController {
+
+        @RequestMapping(path = "/error")
+        public Map<String, Object> handle(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status", request.getAttribute("javax.servlet.error.status_code"));
+        map.put("reason", request.getAttribute("javax.servlet.error.message"));
+        return map;
+        }
+        }
+        </pre>
+
+        <pre class="md_code  language-xml" />
+        <error-page>
+            <location>/error</location>
+        </error-page>
+        </pre>
+        <h3>控制器、匹配映射：</h3>
+
+        <pre class="md_code  language-java" />
+        @Controller
+
+        public class HelloController {
+
+        @GetMapping("/hello")
+        //这个url还可以捕捉变量，匹配多个文件等，模式
+        /*/projects/{param}/versions用括号匹配变量再用下面的注解获取这个变量
+
+        /projects/{project:[a-z]+}/versions  使用正则表达式匹配并捕获变量
+        <div class="md_disorder">/</div>
+        @ResponseBody //加上了这个注解返回是字符串；用Ajax的传输
+        public String handle(Model model,@PathVariable Long param) {
+        model.addAttribute("message", "Hello World!");
+        return "index";//一般情况下返回的是一个文件的全名，是一个请求
+        }
+        }
+        </pre>
+
+        控制器函数的<p class="md_bold" />参数</p>可以是很多种类，应该是通过反射实现的；
+
+        这个方式非常的多，非常的花里胡哨
+        <div class="md_disorder"> 原始的HttpServletRequst 跟servelt一样</div>
+        <div class="md_disorder"> 字符串变量，名字和网络传送的参数一样</div>
+        <div class="md_disorder">--</div>
+
+        request mapping用注解的类型匹配有以下几个：
+        <div class="md_disorder"> <span class="md_codeseg" />@GetMapping</span></div>
+        <div class="md_disorder"> <span class="md_codeseg" />@PostMapping</span></div>
+        <div class="md_disorder"> <span class="md_codeseg" />@PutMapping</span></div>
+        <div class="md_disorder"> <span class="md_codeseg" />@DeleteMapping</span></div>
+        <div class="md_disorder"> <span class="md_codeseg" />@PatchMapping</span></div>
+        <div class="md_disorder"> </div>
+        <h3>视图解析器：</h3>
+
+        <pre class="md_code  language-xml" />
+        <!--配置内部资源视图解析器-->
+        <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+            <!--prefix = "" --视图名称前缀    suffix = ""--视图名称后缀 -->
+            <property name="prefix" value="/WEB-INF/views/"></property>
+            <property name="suffix" value=".jsp"></property>
+        </bean>
+        </pre>
+
+        <pre class="md_code  language-java" />
+        @Bean
+        public InternalResourceViewResolver resolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+        resolver.setViewClass(JstlView.class);
+        resolver.setPrefix("/");
+        resolver.setSuffix(".html");
+        return resolver;
+        }
+        </pre>
+        <h1>问题</h1>
+        <div class="md_disorder"> spring的版本和tomcat版本不匹配的时候无法执行成功</div>
+        <div class="md_disorder"> tomcat的包也要匹配才行</div>
+        <h1>重点内容</h1>
+
+        控制器的编写是很重要的，他在spring 官网的文档中的位置是Annotated Controllers章节部分；
+        <h1>流程</h1>
+
+        <img class="md_img"/ src="C:Users百宝箱文档资料位置文件笔记study<em>notejava图片bitmap</em>sharing_1.png  alt="bitmap<em>sharing</em>1"/>
+
+
+
+        箭头是处理流；
+        <h2>dispatcherServlet</h2>
+
+        这是一个servelt
+
+        <pre class="md_code  language-xml" />
+        <servlet>
+            <servlet-name>dispatch</servlet-name>
+            <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+            <init-param><!--此参数可以在servelt中用函数来访问-->
+                <param-name>contextConfigLocation</param-name>
+                <param-value>classpath:springmvc.xml,classpath:spring.xml</param-value><!--classpath是web-inf下的classes。这是spring提供的.默认到web-inf下查找-->
+            </init-param>
+        </servlet>
+
+        <servlet-mapping>
+            <servlet-name>dispatch</servlet-name>
+            <url-pattern>/</url-pattern>
+
+        </servlet-mapping>
+        </pre>
+        <div class="md_disorder"> dispatcherServelt类在IDEA中需要在Artifacts选项下对web-inf创建lib，并把spring-mvc的包引入到此处才可以正常运行；否则运行的时候加载不了；</div>
+        <div class="md_disorder"> 拦截匹配表达式：</div>
+        <div class="md_disorder"> *.do 这样的只会匹配 * 。。。这样的名字的文件，不会拦截静态资源；可以不用加点</div>
+        <div class="md_disorder"> REST风格 用"/" 或者"/*"拦截，/和/*的区别式/不会拦截jsp而，/*会拦截jsp，静态资源可以在spring的配置文件或者web.xml中释放。spring内加<span class="md_codeseg" /><mvc:default-servlet-handler></span>标签，这相当于式dispatcherServelt做站内转发？</div>
+        <h2>handlerMapping</h2>
+
+        <p class="md_bold" />它的作用相当于spring mvc的内部web.xml</p>； 它在web.xml拦截了路径后又做了一次映射，这个行为式 dispatcherservelt做的；<p class="md_bold" />一个映射在这里就是一个bean，bean的生成多种多样，都是由dispatcherservelt来加载执行的，它会创建一个AnnotationConfigWebApplicationContext ioc环境</p>；
+
+        有三种类型的（前面俩式类级别的，这个*控制器*类一定要继承<span class="md_codeseg" />org.springframework.web.servlet.mvc.Controller</span>接口，实现接口的方法才行，后面的注解不管是什么类，什么方法只要加上了这个注解就可以出成为控制类方法）：
+        <div class="md_order">
+            1. SimpleUrlHandlerMapping的bean标签</div>
+        <div class="md_order">
+            2. beanNameUrlHanderMapping的bean标签，可以不用加载这个类的bean，只需要写控制类bean标签的name属性（<p class="md_bold" />url匹配加 /开头</p>），dispatcherservelt就会根据这个控制类bean创建一个匹配的 beanNameUrlHanderMapping;</div>
+        <div class="md_order">
+            3. 使用注解来</div>
+
+        使用注解需要先加载两个springmvc提供的bean类，加入<span class="md_codeseg" /><mvc:annotation-driven/></span>可以间接加载这俩类，然后其它的类被扫描到就行；
+        <h2>HandlerAdpter</h2>
+
+        对于每一种加载资源的Mapping匹配，比如静态资源的url，servelt的url，注解类的控制器url，类级别的控制器url，他们都有一个adapter类，springmvc也就是dispatcherservelt 不会根据一个映射直接访问一个资源，而是先访问他们对应的adpter，adapter不用不用显示的写出这些bean，springmvc的dispatcherservelt会自行地给他们注册；
+
+        他们的作用是dispatcherservelt调用他们，他们会先去加载一些其它的配置bean函数，比如jsp的前后缀（视图解析器），然后才会调用真正的控制类，达到了适配的作用；
+
+        不用程序员来写他们；
+        <h2>Handler</h2>
+
+        控制器，可以写类级别的，也可以写方法级别的（用注解），方式前面已经写了；
+
+        控制器要么返回一个ModelAndView对象，要么返回一个字符串（注解的形式才行），继承控制器类只能返回数据对象，因为接口得返回值就是这样；
+        <h2>view和viewresoler</h2>
+
+        视图可以是jsp，也可以是字符串；视图解析器会根据 一个<span class="md_codeseg" />ModelAndView</span>对象，指定了视图名字并提供数据，在视图内可以用绑定的方式来使用数据；字符串也会生成ModelAndView不过没有名字；视图解析器执行完返回给dispatcherservlet一个html数据；
+
+        一种资源只能配置一种解析器，每种视图的解析器不同，他们也都是一个类，一个bean；
+
+        <p class="md_bold" />一个视图解析器会解析一种文件，它是一个类</p>，这就需要给文件设置后缀访问；
+        <div class="md_disorder"> 视图解析器只用于控制器函数返回对应一个文件；</div>
+        <h1>常用注解</h1>
+
+        有很多关于控制类函数参数的
+
+        <table class="md_table"><thead><tr><th> 注解                                          </th><th> 用法                                     </th><th> 作用                                                         </th></tr></thead><tbody><tr><td> @Controller                                   </td><td> 注解一个类上                             </td><td> 表明他是控制类，成为一个bean，和其他的bean没有，实际上只有把类注解成这样bean才行 </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@RequestMapping</p>                           </td><td> 可以注解到类，也可以注解到函数，可以同时 </td><td> 路径匹配，要以"/ " web的根目录开始；                         </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@RequestParam</p>                             </td><td> 注解到控制函数的参数上                   </td><td> 获取url中的参数，跟普通的获取一样，不必像@PathVariable一样提供{}模板；如果想设置可以为null,需要加required = false </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@ResponseBody</p>                             </td><td> 注解到方法                               </td><td> 控制类函数将会直接返回字符串                                 </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@RequestBody</p>                              </td><td> 注解控制类函数的参数上                   </td><td> 一定是post请求，会把数据转化成一个实体类对象，<p class="md_bold" />用于请求不是表单</p>这种简单的数据，可以注解在一个JSONobject对象上，也可以是一个字符串等，只能注解参数一次？常用来处理content-type不是默认的<p class="md_bold" />application/x-www-form-urlcoded</p>编码的内容 </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@PathVariable</p>                             </td><td> 注解控制类函数的参数上                   </td><td> 这个需要搭配，前面的路径匹配注解提供<span class="md_codeseg" />{a}</span>这样的模板，然后可以获取；如果想允许实际url中没有这个位置参数，需要在路径匹配中提供另多个路径，然后在该注解内加上required = false;@GetMapping(value = {"l/{a}","/l"}) </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@RequestHeader</p>                            </td><td> 也是放在参数上                           </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@CoookieValue</p>                             </td><td> 也是放在参数上                           </td></tr></tbody><tbody><tr><td> <p class="md_bold" />@GetMapping，@PostMapping，@DeleteMapping</p> </td><td> 指定请求方式                             </td></tr></tbody><tbody><tr><td> @RestController                               </td><td> 它是一个组合注解，作用在类上             </td><td> <p class="md_bold" />@ResponseBody</p>和@controller                               </td></tr></tbody><tbody><tr><td> @@RequestHeader                               </td><td> 注解到请求的参数上                       </td><td> 获取请求头的值                                               </td></tr></tbody><tbody><tr><td> @ModelAttribute                               </td><td> 1. 注解到方法<br />2. 注解到参数上       </td><td> 注解到参数上最常用，前面的是只能获取单个的请求k,v，这个可以直接获取全部的值转化成一个model对象；<a class="md_link" href="https://www.cnblogs.com/cobcmw/p/12092591.html">全面解析Spring中@ModelAttribute注解的用法 - Cobcmw - 博客园 (cnblogs.com)</a> </td></tr></tbody></table>
+
+        <pre class="md_code  language-java" />
+        @Controller
+        @RequestMapping("/test")
+        public class Test{
+        @RequestMapping(value="/{a}", method = RequestMethod.GET)
+        @ResponseBody
+        public String get(@PathVariable("a")String a){
+        return "";
+        }
+        @PostMapping("/test")
+        public void save(@RequestBody User user){}
+        }
+        </pre>
+        <h1>Handler的函数的参数</h1>
+        <div class="md_disorder"> 可以是servelt中的，<p class="md_bold" />HttpServletRequest</p>和<p class="md_bold" />HttpServletResponse</p></div>
+        <div class="md_disorder"> 可以是<p class="md_bold" />HttpSession</p></div>
+        <div class="md_disorder"> 可以是<p class="md_bold" />Model</p>和ModelAndView作用一样</div>
+        <div class="md_disorder"> 可以是一个没有被注解的实体类，它默认匹配的content-type是application/x-www-form-urlencoded，就是普通的表单</div>
+        <div class="md_disorder"> 可以是一个被注解了RequestBody的实体类，它的默认类型是json</div>
+        <div class="md_disorder"> 可以是一个普通的变量，需要被注解RequestParam或者PathVariable</div>
+        <div class="md_disorder"> 可以是一个被注解了验证注解的实体类，这样就不用加RequestBody了，它会自动判断类型，但是类型仅限于json和普通表单？</div>
+        <h1>拦截器</h1>
+
+        <pre class="md_code  language-java" />
+        public class intercept_login implements HandlerInterceptor {
+
+        public   boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+        throws Exception {
+        response.getWriter().print("sucess");
+        System.out.println("成功");
+        return false;
+        }
+
+        }
+        </pre>
+
+        <pre class="md_code  language-java" />
+        @Configuration
+        @EnableWebMvc
+        public class WebConfig implements WebMvcConfigurer {
+
+        @Override
+        public void addInterceptors(InterceptorRegistry registry) {
+        //        registry.addInterceptor(new LocaleChangeInterceptor());
+        //        registry.addInterceptor(new ThemeChangeInterceptor()).addPathPatterns("/<p class="md_bold" />").excludePathPatterns("/admin/</p>");
+        registry.addInterceptor(new intercept_login()).addPathPatterns("/**");
+        }
+        }
+        </pre>
+
+        因为spring boot下的mvc bean工程不能再用xml，所以要用javaconfig来注册拦截器；
+
+        拦截器中最关键的然后有三个，可以查看接口类型；
+        <h1>一些问题</h1>
+        <div class="md_order">
+            1. springmvc控制器转发的界面，如果文件引用资源使用的是相对路径，那么这些相对路径是无法起效的；</div>
+        <div class="md_order">2. 如果使用springboot的配置文件配置mvc而不是bean，有很多功能会失效，比如无法使用等多个视图解析器？</div>
+
+
+        Process finished with exit code 0
+
+
+    </div>
+
+</body>
+
+</html>

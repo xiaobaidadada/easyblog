@@ -1,0 +1,33 @@
+
+swagger:
+  enable: true
+  application-name: ${spring.application.name}
+  application-version: 1.0
+  application-description: springfox swagger 3.0整合Demo
+  try-host: http://localhost:${server.port}
+springdoc:
+  api-docs:
+    #是否开启文档功能
+    enabled: true
+    #swagger后端请求地址
+    path: /api-docs
+  swagger-ui:
+    #自定义swagger前端请求路径，输入http：127.0.0.1:8080/test会自动重定向到swagger页面
+#    path: /test
+
+spring:
+  datasource:
+    url: jdbc:sqlite:D:\databases_data\sqlite\easyblog.db
+    driver-class-name: org.sqlite.JDBC
+  #  mvc:
+  #    view:
+  #      prefix: /
+  #      suffix: .html
+
+  thymeleaf:
+    suffix: .htm #如果返回的视图名字带 加"."符号的后缀这个就无效了
+    prefix: classpath:/templates/  #resources也是一个类路径，和java一样，在项目中可以设置，，，最后的一个"/"符号很关键
+    cache: false
+
+  messages:
+#    basename: classpath:/ #相对路径 开头请勿添加斜杠，相对默认静态资源目录

@@ -1,0 +1,94 @@
+
+.kk{
+    width: 500px;
+    padding-left: 100px;
+}
+a{
+    text-decoration: none;
+    color: #e8e8e8;
+}
+/*
+引用块
+*/
+.md_quote{
+    /*background-color: #00FF00;*/
+    border-left-style: solid;
+    border-left-width: 0.2em;
+    border-left-color: #8d8e8e;
+    padding-left: 0.5em;
+}
+/*
+无序
+ */
+.md_disorder::before{
+    content: "●";
+    color: #60d0a0;
+}
+/*
+代码块
+ */
+.md_code
+{
+    width: 100%;
+    height: auto;
+    background-color: #129646;
+}
+/*
+代码片段
+ */
+.md_codeseg{
+    background-color: #6fdcb5;
+    border-radius:1em;
+}
+/*
+表格
+ */
+.md_table th,td{
+    border-bottom: 1px solid black;
+}
+/*
+无序
+ */
+.md_order *{
+    display: inline;
+}
+/*
+分割线
+ */
+.md_spline{
+    border-bottom: 0.1em solid black;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius:0.1em;
+}
+/*
+加粗
+ */
+.md_bold{
+    font-weight:bold;
+}
+
+
+
+/*
+旧的
+ */
+.md_fengexian{
+    display: block;
+    width: 100%;
+    /*background-color: #91cb7b;*/
+    border-top-color: #129646;
+    border-top-style: solid;
+
+
+}
+.md_jiachu{
+    font-weight:bold;
+    color: #42b983;
+}
+.md_code_part{
+    background-color: rgb(225, 234, 230);
+    display: inline;
+    border-radius:0.5rem;
+
+}

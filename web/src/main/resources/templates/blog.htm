@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--    <link rel="stylesheet" th:attr="href=@{/css/font-awesome-4.7.0/css/font-awesome.css}">-->
+    <!--    <link rel="stylesheet" th:attr="href='/css/markdown.css'">-->
+    <link rel="stylesheet" href="/css/bootstrap-5.1.3-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/markdown.css">
+    <link rel="stylesheet" href="/css/blog.css">
+    <script src="/css/bootstrap-5.1.3-dist/js/bootstrap.js"></script><!--不导入无法使用下拉等属性-->
+    <link rel="stylesheet" href="/js/prism/prism.css">
+    <script src="/js/prism/prism.js"></script>
+</head>
+<body>
+<!--<div th:text="#{test.f} +#{j}">啥</div>-->
+<!--[[${#request.getContextPath()}]]-->
+<!--[[#{email}]]-->
+
+<div class="wrapper mobile_wrapper">
+    <div class="pc_dir_menu mobile_dir_menu">
+
+        <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
+                aria-controls="offcanvasTop">目录
+        </button>
+
+        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasTopLabel">目录</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body" th:utext="${blog.getDirectory()}" >
+
+            </div>
+        </div>
+       <a href="/">主页</a>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-1  mobile_dir">
+            <button type="button" class="btn btn-light"><a href="/">主页</a></button>
+        </div>
+        <div class="col-sm-3  mobile_dir">
+
+            <h1>目录</h1>
+                        <div th:utext="${blog.getDirectory()}"></div>
+        </div>
+        <div class="col-12 col-sm-8 ">
+            <div th:utext="${blog.getContext()}"></div>
+            <div class="row blog_context_foorter">
+                <div class="col" th:text="'发布时间'+${blog.getTime()}"></div>
+                <div class="col" >未经允许请勿转载</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

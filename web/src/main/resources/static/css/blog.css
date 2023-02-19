@@ -1,0 +1,38 @@
+
+body {
+    background: #f7f7f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    padding-bottom: 30px;
+}
+
+.wrapper {
+    margin: auto;
+    max-width: 1000px;
+    padding: 20px 40px;
+    height: 100px;
+    font-family:"Times New Roman",Georgia,Serif;
+
+}
+.blog_context_foorter{
+    /*height: 100px;*/
+    /*background-color: #91cb7b;*/
+    padding-top: 10px;
+}
+.pc_dir_menu{
+
+    display: none;
+}
+/*媒体查询*/
+@media only screen and ( max-width: 500px) {
+    .mobile_dir{
+        display: none;
+    }
+    .mobile_wrapper{
+        padding:6px 12px;
+    }
+    .mobile_dir_menu{
+        display: block;
+    }
+}
