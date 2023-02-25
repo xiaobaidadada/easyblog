@@ -1,13 +1,21 @@
 package fun.xb.web.controller.admin;
 
 
+import fun.xb.basefunction.entity.blog;
+import fun.xb.basefunction.entity.comment;
+import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.Session;
+import fun.xb.easyorm.util.SelectPage;
 import fun.xb.web.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 后台评论系统
@@ -27,20 +35,48 @@ public class CommentController {
     @GetMapping("/getCP")
     @ResponseBody
     public Result<Page<CommentVO>> getP(@RequestParam("essay_id")int id, Page page, int status) {
-
-        return Result.sucess();
+        SelectPage<comment> p=new SelectPage();
+        p.setNum(page.getNum());
+        p.setSize(page.getSize());
+        session.selectPage("select * from comment where seeay_id = ?", comment.class,p,id);
+        Page page1=new Page<>();
+        POJOUtil.copyProperties(p,page1);
+        return Result.sucess(page1);
     }
 
     /**
-     * 修改评论
+     * 修改 或者 新增评论
      * @param commentVO
      * @return
      */
-    @PostMapping("/update")
+    @PostMapping("/save")
     @ResponseBody
     public Result comment(CommentVO commentVO) {
 
-        return Result.sucess();
+        comment comment = new comment();
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateNowStr = sdf.format(d);
+        comment.setTime(dateNowStr);
+
+        POJOUtil.copyProperties(commentVO, comment,(v,o)->{
+            o.setBlog_id(v.getEssay_id());
+            o.setContext(v.getComment());
+            o.setId(null);
+        });
+        comment.setId(null);
+        if(commentVO.getId()==-1){
+            session.insert(comment);
+            return Result.sucess(comment.getId());
+        }
+        else {
+            if(session.updateById(comment)!=0){
+                return Result.sucess();
+            }
+            else {
+                return Result.fail();
+            }
+        }
     }
 
     /**
@@ -49,8 +85,17 @@ public class CommentController {
      */
     @PostMapping("/delete")
     @ResponseBody
-    public Result delete(@RequestParam("id")int id) {
-
+    public Result delete(@RequestParam("id")Integer id) {
+        comment comment = new comment();
+        comment.setId(id);
+        if(id!=null){
+            if(session.deleteById(comment)!=0){
+                return Result.sucess();
+            }
+            else {
+                return Result.fail();
+            }
+        }
         return Result.sucess();
     }
     /**
@@ -58,9 +103,9 @@ public class CommentController {
      */
     @GetMapping("/get")
     @ResponseBody
-    public Result<CommentVO> getC(@RequestParam("id")int id) {
-
-        return Result.sucess();
+    public Result getC(@RequestParam("id")int id) {
+        List<comment> list=session.select("select * from comment where id=?", comment.class,id);
+        return Result.sucess(list.get(0));
     }
 
 

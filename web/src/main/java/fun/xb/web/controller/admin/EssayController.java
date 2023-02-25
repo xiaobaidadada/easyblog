@@ -3,14 +3,13 @@ package fun.xb.web.controller.admin;
 
 import fun.xb.basefunction.entity.blog;
 import fun.xb.basefunction.entity.type;
-import fun.xb.basefunction.service.essay.easy_service;
 import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.Session;
+import fun.xb.easyorm.util.SelectPage;
 import fun.xb.web.vo.EssayVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,11 +43,12 @@ public class EssayController {
         essay.verify();
         POJOUtil.copyProperties(essay, blog,(v,o)->{
             o.setType_id(v.getType());
+            o.setId(null);
         });
         blog.setId(null);
         if(essay.getId()==-1){
-            session.insert(essay);
-            return Result.sucess(essay.getId());
+            session.insert(blog);
+            return Result.sucess(blog.getId());
         }
         else {
             if(session.updateById(blog)!=0){
@@ -71,7 +71,7 @@ public class EssayController {
         blog blog = new blog();
         blog.setId(id);
         if(id!=null){
-            if(session.deleteById(blog)!=1){
+            if(session.deleteById(blog)!=0){
                 return Result.sucess();
             }
             else {
@@ -88,10 +88,10 @@ public class EssayController {
      */
     @GetMapping("getP")
     public Result<Page> getPage(Integer size,Integer num) {
-        fun.xb.easyorm.util.Page<type> p=new fun.xb.easyorm.util.Page();
+        SelectPage<blog> p=new SelectPage();
         p.setNum(num);
         p.setSize(size);
-        session.selectPage("select * from type where id=?", type.class,p);
+        session.selectPage("select * from blog", blog.class,p);
         Page page1=new Page<>();
         POJOUtil.copyProperties(p,page1);
         return Result.sucess(page1);
@@ -102,7 +102,7 @@ public class EssayController {
      */
     @GetMapping("get")
     public Result get(Integer id) {
-        List<type> list=session.select("select * from blog where id=?", type.class,id);
+        List<blog> list=session.select("select * from blog where id=?", blog.class,id);
         return Result.sucess(list.get(0));
     }
 

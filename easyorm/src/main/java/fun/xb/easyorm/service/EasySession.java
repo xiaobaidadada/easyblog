@@ -1,8 +1,6 @@
 package fun.xb.easyorm.service;
 
 import fun.xb.easyorm.util.*;
-import fun.xb.easyorm.util.*;
-import fun.xb.easyorm.util.*;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.*;
@@ -83,7 +81,7 @@ public class EasySession implements Session{
                     if(rs.next()){
                         try {
                             T t= (T) dto.getClass().getDeclaredConstructor().newInstance();
-                            DTOUtil.setId(dto,rs.getInt(1));
+                            DTOUtil.setId(dto,rs.getObject(1));
                             return  t;
                         } catch (InstantiationException e) {
                             throw new RuntimeException(e);
@@ -311,17 +309,17 @@ public class EasySession implements Session{
      * @return
      * @param <T>
      */
-    public <T> Page<T> selectPage(String sql, Class<T> c, Page<T> page, Object ... parms)  {
+    public <T> SelectPage<T> selectPage(String sql, Class<T> c, SelectPage<T> page, Object ... parms)  {
         /**
          * 注意：如果关联查询多个属性相同，要用标识符标识，否则会覆盖同名属性；
          */
         Long total=selectCount(sql,parms);
 
         if(page.getType()== PageType.POSTGRESQL){
-            sql+=" LIMIT "+page.getSize()+" OFFSET " +page.getNum();
+            sql+=" LIMIT "+page.getSize()+" OFFSET " +(page.getNum()-1);
         }
         if(page.getType()==PageType.MYSQL){
-            sql+=" LIMIT "+page.getNum()+" , " +page.getSize();
+            sql+=" LIMIT "+(page.getNum() -1)+" , " +page.getSize();
         }
 
         List<Map<String, Object>> maps;
@@ -334,15 +332,28 @@ public class EasySession implements Session{
 
         page.setList(res);
         page.setTotal(Math.toIntExact(total));
-        page.setPages(Page.getPages(page.getTotal(),page.getSize()));
+        page.setPages(SelectPage.getPages(page.getTotal(),page.getSize()));
         return page;
     }
 
 
+    /**
+     * 目前不支持分组查询个数
+     * @param sql
+     * @param parms
+     * @return
+     */
     public Long selectCount(String sql,Object ... parms)  {
         Long count= null;
+        sql="select count(*) "+sql.substring(sql.indexOf("from"));
         try {
-            count = qr.query(sql,new ScalarHandler<Long>(),parms);
+            count = (Long) qr.query(sql, new ResultSetHandler() {
+                @Override
+                public Long handle(ResultSet rs) throws SQLException {
+                    return rs.getLong(1);
+
+                }
+            },parms);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

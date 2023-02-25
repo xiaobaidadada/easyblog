@@ -8,7 +8,7 @@ import java.util.List;
  * 分页返回值
  */
 @Data
-public class Page<T> {
+public class SelectPage<T> {
 
     private int num;//页数
 

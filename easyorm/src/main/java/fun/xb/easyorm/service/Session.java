@@ -1,6 +1,6 @@
 package fun.xb.easyorm.service;
 
-import fun.xb.easyorm.util.Page;
+import fun.xb.easyorm.util.SelectPage;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -100,10 +100,10 @@ public interface Session {
      * @return
      * @param <T>
      */
-    public <T> Page<T> selectPage(String sql, Class<T> c, Page<T> page, Object ... parms);
+    public <T> SelectPage<T> selectPage(String sql, Class<T> c, SelectPage<T> page, Object ... parms);
 
     /**
-     * 返回记录查询的总数量
+     * 返回记录查询的总数量 请输入正常的sql语句，会自动把select转化成 conut(*)
      * @param sql
      * @param parms
      * @return
