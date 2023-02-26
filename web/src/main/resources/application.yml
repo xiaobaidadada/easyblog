@@ -1,11 +1,11 @@
 
 
-server:
-  port: 80
-  #port: 443
-  servlet:
-    session:
-      timeout: 3h #ms毫秒 s秒 m分钟 h小时 d天
+#server:
+#  port: 80
+#  #port: 443
+#  servlet:
+#    session:
+#      timeout: 3h #ms毫秒 s秒 m分钟 h小时 d天
 #  ssl:
 #    enabled: true
 #    key-store: classpath:https/luoshoushou.fun.jks
@@ -13,9 +13,9 @@ server:
 #    key-store-password: baizc192837465
 
 
-mybatis:
-  mapper-locations: classpath:mapper/*
-
-http-port: 80
+#mybatis:
+#  mapper-locations: classpath:mapper/*
+#
+#http-port: 80
 
 

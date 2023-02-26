@@ -12,5 +12,5 @@ public class blog_constant {
     public  static int plug_on = 0;
 
     //关闭
-    public static int plug_off = 0;
+    public static int plug_off = 1;
 }

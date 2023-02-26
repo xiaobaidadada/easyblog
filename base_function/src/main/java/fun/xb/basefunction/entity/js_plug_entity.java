@@ -1,13 +1,12 @@
 package fun.xb.basefunction.entity;
 
 
-import fun.xb.easyorm.service.annotation.id;
 import fun.xb.easyorm.service.annotation.table;
 import lombok.Data;
 
 @Data
-@table("css_plug")
-public class css_plug {
+@table("js_plug")
+public class js_plug_entity {
 
     /**
      * 自增id
@@ -34,5 +33,10 @@ public class css_plug {
      * 排序，默认为0
      */
     Integer sort;
+
+    /**
+     * 插件类型，主页1 博客2
+     */
+    Integer type;
 
 }

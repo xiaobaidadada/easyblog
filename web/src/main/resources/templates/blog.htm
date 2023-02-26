@@ -15,9 +15,7 @@
     <script src="/js/prism/prism.js"></script>
 </head>
 <body>
-<!--<div th:text="#{test.f} +#{j}">啥</div>-->
-<!--[[${#request.getContextPath()}]]-->
-<!--[[#{email}]]-->
+
 
 <div class="wrapper mobile_wrapper">
     <div class="pc_dir_menu mobile_dir_menu">
@@ -31,7 +29,7 @@
                 <h5 class="offcanvas-title" id="offcanvasTopLabel">目录</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body" th:utext="${blog.getDirectory()}" >
+            <div class="offcanvas-body" th:utext="${blog.getTitle()}" >
 
             </div>
         </div>
@@ -47,12 +45,12 @@
         <div class="col-sm-3  mobile_dir">
 
             <h1>目录</h1>
-                        <div th:utext="${blog.getDirectory()}"></div>
+                        <div th:utext="${blog.getTitle()}"></div>
         </div>
         <div class="col-12 col-sm-8 ">
             <div th:utext="${blog.getContext()}"></div>
             <div class="row blog_context_foorter">
-                <div class="col" th:text="'发布时间'+${blog.getTime()}"></div>
+                <div class="col" th:text="'发布时间'+${blog.getTime_created()}"></div>
                 <div class="col" >未经允许请勿转载</div>
             </div>
         </div>

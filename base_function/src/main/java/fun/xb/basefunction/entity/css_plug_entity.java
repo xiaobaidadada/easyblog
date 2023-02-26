@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @table("css_plug")
-public class js_plug {
+public class css_plug_entity {
 
     /**
      * 自增id
@@ -33,5 +33,10 @@ public class js_plug {
      * 排序，默认为0
      */
     Integer sort;
+
+    /**
+     * 插件类型，主页1 博客2
+     */
+    Integer type;
 
 }

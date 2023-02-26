@@ -24,13 +24,13 @@ function updateessay(){
 
     let http = new XMLHttpRequest();
 
-    http.open('post', url+'/blog/tblog',true);//设置ajax参数
+    http.open('post', url+'/index/tblog',true);//设置ajax参数
     http.onreadystatechange = function (e) {
         // console.log(http.responseText)
         if (http.readyState == 4 && http.status == 200 ) {
 
             // alert(http.responseText+'成功')
-            let array=JSON.parse(http.responseText)['blog'];
+            let array=JSON.parse(http.responseText)['value'];
             if (array.length!=0)
             for (let t in array){
                 addEssayToDiv(array[t]);
@@ -66,14 +66,14 @@ window.onload=function (){
 let load_essaytype=function (){
     let http = new XMLHttpRequest();
 
-    http.open('post', url+'/blog/type',true);//设置ajax参数
+    http.open('post', url+'/index/type',true);//设置ajax参数
     http.onreadystatechange = function (e) {
         // console.log(http.responseText)
         if (http.readyState == 4 && http.status == 200 ) {
 
             // alert(http.responseText+'成功')
             let type= document.querySelector("#type")//文章父div
-            let array=JSON.parse(http.responseText)['blogtype'];
+            let array=JSON.parse(http.responseText)['value'];
 
             for (let t in array){
                 let id=array[t]['id'];
@@ -113,7 +113,7 @@ function essay_type_load(event){
 
     let http = new XMLHttpRequest();
 
-    http.open('post', url+'/blog/typename',true);//设置ajax参数
+    http.open('post', url+'/index/typename',true);//设置ajax参数
     http.onreadystatechange = function (e) {
         // console.log(http.responseText)
         if (http.readyState == 4 && http.status == 200 ) {
@@ -141,7 +141,7 @@ function essay_type_load(event){
 //首页访问次数增加
 function indexload(){
     let http = new XMLHttpRequest();
-    http.open('post', url+'/blog/indexload',true);//设置ajax参数
+    http.open('post', url+'/index/indexload',true);//设置ajax参数
     // http.onreadystatechange = function (e) {
     //     // console.log(http.responseText)
     // }
@@ -163,7 +163,7 @@ keycode   13 = Enter 回车
         let http = new XMLHttpRequest();
         let input=event.currentTarget.value;
 
-        http.open('post', url+'/blog/queryblog',true);//设置ajax参数
+        http.open('post', url+'/index/queryblog',true);//设置ajax参数
         http.onreadystatechange = function (e) {
             // console.log(http.responseText)
             if (http.readyState == 4 && http.status == 200 ) {

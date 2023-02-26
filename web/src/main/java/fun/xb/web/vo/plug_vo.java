@@ -23,4 +23,9 @@ public class plug_vo {
      * 是否启用 0启用 1关闭，只能有一个启动
      */
     Integer on_off;
+
+    /**
+     * 插件类型，主页1 博客2
+     */
+    Integer type;
 }

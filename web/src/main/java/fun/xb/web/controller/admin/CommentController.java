@@ -1,12 +1,11 @@
 package fun.xb.web.controller.admin;
 
 
-import fun.xb.basefunction.entity.blog;
-import fun.xb.basefunction.entity.comment;
+import fun.xb.basefunction.entity.comment_entity;
 import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.Session;
+import fun.xb.easyorm.service.SqlSession;
 import fun.xb.easyorm.util.SelectPage;
 import fun.xb.web.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.List;
 public class CommentController {
 
     @Autowired
-    Session session;
+    SqlSession session;
     /**
      * 获取文章相关评论 分页的形式 可以选择展示什么样的评论 type 0全部 1已经删除 2未删除
      * @param id
@@ -35,10 +34,10 @@ public class CommentController {
     @GetMapping("/getCP")
     @ResponseBody
     public Result<Page<CommentVO>> getP(@RequestParam("essay_id")int id, Page page, int status) {
-        SelectPage<comment> p=new SelectPage();
+        SelectPage<comment_entity> p=new SelectPage();
         p.setNum(page.getNum());
         p.setSize(page.getSize());
-        session.selectPage("select * from comment where seeay_id = ?", comment.class,p,id);
+        session.selectPage("select * from comment where seeay_id = ?", comment_entity.class,p,id);
         Page page1=new Page<>();
         POJOUtil.copyProperties(p,page1);
         return Result.sucess(page1);
@@ -53,7 +52,7 @@ public class CommentController {
     @ResponseBody
     public Result comment(CommentVO commentVO) {
 
-        comment comment = new comment();
+        comment_entity comment = new comment_entity();
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateNowStr = sdf.format(d);
@@ -86,7 +85,7 @@ public class CommentController {
     @PostMapping("/delete")
     @ResponseBody
     public Result delete(@RequestParam("id")Integer id) {
-        comment comment = new comment();
+        comment_entity comment = new comment_entity();
         comment.setId(id);
         if(id!=null){
             if(session.deleteById(comment)!=0){
@@ -104,7 +103,7 @@ public class CommentController {
     @GetMapping("/get")
     @ResponseBody
     public Result getC(@RequestParam("id")int id) {
-        List<comment> list=session.select("select * from comment where id=?", comment.class,id);
+        List<comment_entity> list=session.select("select * from comment where id=?", comment_entity.class,id);
         return Result.sucess(list.get(0));
     }
 

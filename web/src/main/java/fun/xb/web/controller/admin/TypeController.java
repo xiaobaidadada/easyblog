@@ -1,8 +1,8 @@
 package fun.xb.web.controller.admin;
 
-import fun.xb.basefunction.entity.type;
+import fun.xb.basefunction.entity.type_entity;
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.Session;
+import fun.xb.easyorm.service.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +22,14 @@ import java.util.List;
 public class TypeController {
 
     @Autowired
-    Session session;
+    SqlSession session;
 
     /**
      * 保存或者修改接口
      */
     @PostMapping("/save")
     public Result upload(Integer id, String type_name) {//参数分别是id和类型名
-        type t=new type();
+        type_entity t=new type_entity();
         t.setId(id);
         t.setType_name(type_name);
         if(id!=-1){
@@ -54,7 +54,7 @@ public class TypeController {
      */
     @PostMapping("/del")
     public Result delte(Integer id) {
-        type t=new type();
+        type_entity t=new type_entity();
         t.setId(id);
         if(session.deleteById(t)!=0){
             return Result.sucess();
@@ -70,7 +70,7 @@ public class TypeController {
      */
     @GetMapping("getA")
     public Result<List> getAll() {
-        List<type> list=session.select("select * from type ", type.class);
+        List<type_entity> list=session.select("select * from type ", type_entity.class);
 
         return Result.sucess(list);
     }
@@ -80,7 +80,7 @@ public class TypeController {
      */
     @GetMapping("get")
     public Result get(Integer id) {
-        List<type> list=session.select("select * from type where id=?", type.class,id);
+        List<type_entity> list=session.select("select * from type where id=?", type_entity.class,id);
         return Result.sucess(list.get(0));
     }
 }

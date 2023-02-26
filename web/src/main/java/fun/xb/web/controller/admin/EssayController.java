@@ -1,12 +1,11 @@
 package fun.xb.web.controller.admin;
 
 
-import fun.xb.basefunction.entity.blog;
-import fun.xb.basefunction.entity.type;
+import fun.xb.basefunction.entity.blog_entity;
 import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.Session;
+import fun.xb.easyorm.service.SqlSession;
 import fun.xb.easyorm.util.SelectPage;
 import fun.xb.web.vo.EssayVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class EssayController {
 //    @Autowired
 //    easy_service service;
     @Autowired
-    Session session;
+SqlSession session;
 
     /**
      * 保存或者修改接口
@@ -39,7 +38,7 @@ public class EssayController {
      */
     @PostMapping("/save")
     public Result upload(EssayVO essay) {
-        blog blog = new blog();
+        blog_entity blog = new blog_entity();
         essay.verify();
         POJOUtil.copyProperties(essay, blog,(v,o)->{
             o.setType_id(v.getType());
@@ -68,7 +67,7 @@ public class EssayController {
      */
     @PostMapping("/del")
     public Result delte(Integer id) {
-        blog blog = new blog();
+        blog_entity blog = new blog_entity();
         blog.setId(id);
         if(id!=null){
             if(session.deleteById(blog)!=0){
@@ -88,10 +87,10 @@ public class EssayController {
      */
     @GetMapping("getP")
     public Result<Page> getPage(Integer size,Integer num) {
-        SelectPage<blog> p=new SelectPage();
+        SelectPage<blog_entity> p=new SelectPage();
         p.setNum(num);
         p.setSize(size);
-        session.selectPage("select * from blog", blog.class,p);
+        session.selectPage("select * from blog", blog_entity.class,p);
         Page page1=new Page<>();
         POJOUtil.copyProperties(p,page1);
         return Result.sucess(page1);
@@ -102,7 +101,7 @@ public class EssayController {
      */
     @GetMapping("get")
     public Result get(Integer id) {
-        List<blog> list=session.select("select * from blog where id=?", blog.class,id);
+        List<blog_entity> list=session.select("select * from blog where id=?", blog_entity.class,id);
         return Result.sucess(list.get(0));
     }
 

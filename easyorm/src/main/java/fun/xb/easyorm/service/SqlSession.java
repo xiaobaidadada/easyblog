@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public interface Session {
+public interface SqlSession {
     /**
      * 插入任意一种类型的dto到数据库，会返回主键值
      * @param dto

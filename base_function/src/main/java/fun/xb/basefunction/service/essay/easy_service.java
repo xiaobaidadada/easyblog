@@ -1,7 +1,7 @@
 package fun.xb.basefunction.service.essay;
 
 
-import fun.xb.easyorm.service.Session;
+import fun.xb.easyorm.service.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 public class easy_service {
 
     @Autowired
-    Session session;
+    SqlSession session;
 }

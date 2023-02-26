@@ -1,17 +1,14 @@
 package fun.xb.web.controller.admin;
 
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.Session;
 import fun.xb.web.vo.ConfigVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * 配置项目的一些设置，采用默认的sqlte数据库
  */
 
-@Controller
+@RestController
 @RequestMapping(value = "/config",produces = {"text/html;charset=UTF-8;", "application/json;charset=UTF-8;"})//添加produces，根据协议缩小范围
 public class ConfigController {
 

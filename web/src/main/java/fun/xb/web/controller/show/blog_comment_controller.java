@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @ResponseBody
 @RequestMapping("/comment")
-public class ShowCommentController {
+public class blog_comment_controller {
 
     /**
      * 获取文章相关评论 分页的形式
