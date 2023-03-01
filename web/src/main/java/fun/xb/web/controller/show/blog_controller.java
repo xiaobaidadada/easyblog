@@ -37,20 +37,7 @@ public class blog_controller {
 
 
 
-//    /**
-//     * 获取一种文章类型的名字
-//     * @param request
-//     * @param body
-//     * @return
-//     */
-//    @PostMapping("/typename")
-//    @ResponseBody
-//    public String gettypename(HttpServletRequest request, @RequestBody String body){
-//        JSONObject object=JSONObject.parseObject(body);
-//        int id= Integer.parseInt((String) object.get("id"));
-//
-//        return blog.getBlogTypeName(id);
-//    }
+
 //
 //
 //

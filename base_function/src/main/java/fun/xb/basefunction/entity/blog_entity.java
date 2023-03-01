@@ -21,4 +21,7 @@ public class blog_entity {
     String time_update;
 
     Integer type_id;
+
+    String directory;
+
 }

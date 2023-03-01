@@ -119,7 +119,7 @@ function essay_type_load(event){
         if (http.readyState == 4 && http.status == 200 ) {
 
             // alert(http.responseText+'成功')
-            let array=JSON.parse(http.responseText)['typename'];
+            let array=JSON.parse(http.responseText)['value'];
 
             document.querySelector("#essay > p").innerHTML=array;
            essay_index=0;//文章篇数

@@ -28,4 +28,5 @@ public class plug_vo {
      * 插件类型，主页1 博客2
      */
     Integer type;
+
 }

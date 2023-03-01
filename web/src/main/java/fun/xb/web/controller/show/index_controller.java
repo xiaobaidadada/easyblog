@@ -68,9 +68,25 @@ public class index_controller {
     @Transactional//不加也可以更新
     public String indexload(HttpServletRequest request){//发送的body为空不能有, @RequestBody String body
 
-
+//todo
         System.out.println("统计");
         return "ok";
+    }
+
+        /**
+     * 获取一种文章类型的名字
+     * @param request
+     * @param body
+     * @return
+     */
+    @PostMapping("/typename")
+    @ResponseBody
+    public Result gettypename(HttpServletRequest request, @RequestBody String body){
+        JSONObject object=JSONObject.parseObject(body);
+        int id= Integer.parseInt((String) object.get("id"));
+        List<blog_entity> list = session.select("select * from blog where type_id =? limit 0,6",blog_entity.class,id);
+
+        return Result.sucess(list);
     }
 
 }
