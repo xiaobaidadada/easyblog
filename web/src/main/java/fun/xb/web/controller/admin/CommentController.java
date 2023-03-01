@@ -44,11 +44,11 @@ public class CommentController {
     }
 
     /**
-     * 修改 或者 新增评论
+     * 修改 或者 没有新增新增评论（只是后台）
      * @param commentVO
      * @return
      */
-    @PostMapping("/save")
+    @PostMapping("/update")
     @ResponseBody
     public Result comment(CommentVO commentVO) {
 
