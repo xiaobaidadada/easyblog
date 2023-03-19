@@ -46,6 +46,6 @@ public class TypeConverter {
             if(hehe.equals("java.lang.Byte"))return ((Byte)self).shortValue();
             return (short)self;
         }
-        return null;
+        return self;
     }
 }
