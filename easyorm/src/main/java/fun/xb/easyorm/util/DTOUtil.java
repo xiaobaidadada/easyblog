@@ -189,7 +189,7 @@ public class DTOUtil {
 
 
     /**
-     * 给特定的属性设置特定的值
+     * 给对象oo 特定的属性设置特定的值o
      */
     public static  void setPartOfProperty(Object oo,String name,Object o){
 
@@ -202,7 +202,7 @@ public class DTOUtil {
                     fieldTarget.setAccessible(true);
                     try {
                         if(o!=null)
-                        fieldTarget.set(oo,o);
+                        fieldTarget.set(oo,TypeConverter.selfType_to_otherType(fieldTarget.getType().getTypeName(),o));
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }

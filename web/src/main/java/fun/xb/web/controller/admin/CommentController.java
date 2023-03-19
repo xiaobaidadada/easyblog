@@ -6,7 +6,7 @@ import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.SqlSession;
-import fun.xb.easyorm.util.SelectPage;
+import fun.xb.easyorm.util.easyormPage;
 import fun.xb.web.vo.CommentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,8 +34,8 @@ public class CommentController {
     @GetMapping("/getCP")
     @ResponseBody
     public Result<Page<CommentVO>> getP(@RequestParam("essay_id")int id, Page page, int status) {
-        SelectPage<comment_entity> p=new SelectPage();
-        p.setNum(page.getNum());
+        easyormPage<comment_entity> p=new easyormPage();
+        p.setPage(page.getPage());
         p.setSize(page.getSize());
         session.selectPage("select * from comment where seeay_id = ?", comment_entity.class,p,id);
         Page page1=new Page<>();
@@ -53,10 +53,10 @@ public class CommentController {
     public Result comment(CommentVO commentVO) {
 
         comment_entity comment = new comment_entity();
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateNowStr = sdf.format(d);
-        comment.setTime(dateNowStr);
+//        Date d = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String dateNowStr = sdf.format(d);
+        comment.setTime(System.currentTimeMillis());
 
         POJOUtil.copyProperties(commentVO, comment,(v,o)->{
             o.setBlog_id(v.getEssay_id());

@@ -16,12 +16,17 @@ public class blog_entity {
 
     String context;
 
-    String time_created;
+    Long time_created;
 
-    String time_update;
+    Long time_update;
 
+    //类型Id
     Integer type_id;
 
+    //目录
     String directory;
+
+    //点击次数
+    Integer click;
 
 }

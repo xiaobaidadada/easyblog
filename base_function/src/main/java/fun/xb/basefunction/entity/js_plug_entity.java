@@ -22,7 +22,7 @@ public class js_plug_entity {
     /**
      * 创建时间
      */
-    String time;
+    Long time;
 
     /**
      * 是否启用 0启用 1关闭，只能有一个启动

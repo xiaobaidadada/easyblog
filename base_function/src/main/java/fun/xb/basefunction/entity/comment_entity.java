@@ -16,7 +16,7 @@ public class comment_entity {
 
     Integer father_id;
 
-    String time;
+    Long time;
 
     Integer blog_id;
 }

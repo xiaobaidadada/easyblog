@@ -8,9 +8,9 @@ import java.util.List;
  * 分页返回值
  */
 @Data
-public class SelectPage<T> {
+public class easyormPage<T> {
 
-    private int num;//页数
+    private int page;//页数
 
     private int size;//页面大小
 

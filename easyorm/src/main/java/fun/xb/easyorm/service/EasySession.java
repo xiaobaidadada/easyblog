@@ -309,17 +309,17 @@ public class EasySession implements SqlSession {
      * @return
      * @param <T>
      */
-    public <T> SelectPage<T> selectPage(String sql, Class<T> c, SelectPage<T> page, Object ... parms)  {
+    public <T> easyormPage<T> selectPage(String sql, Class<T> c, easyormPage<T> page, Object ... parms)  {
         /**
          * 注意：如果关联查询多个属性相同，要用标识符标识，否则会覆盖同名属性；
          */
         Long total=selectCount(sql,parms);
 
         if(page.getType()== PageType.POSTGRESQL){
-            sql+=" LIMIT "+page.getSize()+" OFFSET " +(page.getNum()-1);
+            sql+=" LIMIT "+page.getSize()+" OFFSET " +(page.getPage()-1);
         }
         if(page.getType()==PageType.MYSQL){
-            sql+=" LIMIT "+(page.getNum() -1)+" , " +page.getSize();
+            sql+=" LIMIT "+(page.getPage() -1)+" , " +page.getSize();
         }
 
         List<Map<String, Object>> maps;
@@ -332,7 +332,7 @@ public class EasySession implements SqlSession {
 
         page.setList(res);
         page.setTotal(Math.toIntExact(total));
-        page.setPages(SelectPage.getPages(page.getTotal(),page.getSize()));
+        page.setPages(easyormPage.getPages(page.getTotal(),page.getSize()));
         return page;
     }
 

@@ -7,7 +7,7 @@ import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.SqlSession;
-import fun.xb.easyorm.util.SelectPage;
+import fun.xb.easyorm.util.easyormPage;
 import fun.xb.web.vo.plug_vo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,10 +36,10 @@ public class CssPlugController {
     @PostMapping("/save")
     public Result logup(plug_vo vo) {
         css_plug_entity plug = new css_plug_entity();
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateNowStr = sdf.format(d);
-        plug.setTime(dateNowStr);
+//        Date d = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String dateNowStr = sdf.format(d);
+        plug.setTime(System.currentTimeMillis());
 
         POJOUtil.copyProperties(vo, plug,(v, o)->{
             o.setId(null);
@@ -105,8 +105,8 @@ public class CssPlugController {
      */
     @GetMapping("getP")
     public Result getP(Integer size,Integer num){
-        SelectPage<css_plug_entity> p=new SelectPage();
-        p.setNum(num);
+        easyormPage<css_plug_entity> p=new easyormPage();
+        p.setPage(num);
         p.setSize(size);
         session.selectPage("select * from css_plug order by sort desc", css_plug_entity.class,p);
         Page page1=new Page<>();
