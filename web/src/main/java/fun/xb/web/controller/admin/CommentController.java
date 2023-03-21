@@ -8,6 +8,8 @@ import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.SqlSession;
 import fun.xb.easyorm.util.easyormPage;
 import fun.xb.web.vo.CommentVO;
+import fun.xb.web.vo.comment_static;
+import fun.xb.web.vo.essay_static;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 后台评论系统
@@ -33,14 +36,31 @@ public class CommentController {
      */
     @GetMapping("/getCP")
     @ResponseBody
-    public Result<Page<CommentVO>> getP(@RequestParam("essay_id")int id, Page page, int status) {
+    public Result<Page<CommentVO>> getP(Integer id, Integer status,String title,String context, int page,int size) {
         easyormPage<comment_entity> p=new easyormPage();
-        p.setPage(page.getPage());
-        p.setSize(page.getSize());
-        session.selectPage("select * from comment where seeay_id = ?", comment_entity.class,p,id);
+        p.setPage(page);
+        p.setSize(size);
+        session.selectPage(String.format("select * from comment where 1=1 %s %s %s order by id desc ",
+                id==null?"":"and id = "+id,
+                title==null?"":" and title like %"+title.replaceAll(" ","")+"%",
+                context==null?"":" and context like %"+title.replaceAll(" ","")+"%"), comment_entity.class,p);
         Page page1=new Page<>();
         POJOUtil.copyProperties(p,page1);
         return Result.sucess(page1);
+    }
+
+    /**
+     * 获取统计接口
+     *
+     * @return
+     */
+    @GetMapping("get_static")
+    public Result<comment_static> get_static_info() {
+
+        long total = session.selectCount("select * from comment  ");
+//        long title = session.selectCount("select * from comment  ");
+        String title = "haha";
+        return Result.sucess(comment_static.build().title(title).total(total));
     }
 
     /**
@@ -60,7 +80,6 @@ public class CommentController {
 
         POJOUtil.copyProperties(commentVO, comment,(v,o)->{
             o.setBlog_id(v.getEssay_id());
-            o.setContext(v.getComment());
             o.setId(null);
         });
         comment.setId(null);

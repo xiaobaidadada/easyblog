@@ -17,7 +17,7 @@ public class CommentVO
     /**
      * 评论内容
      */
-    private String comment;
+    private String context;
     /**
      * 父评论 如果有
      */
