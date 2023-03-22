@@ -93,7 +93,7 @@ SqlSession session;
         p.setPage(page);
         p.setSize(size);
         session.selectPage(String.format("select * from blog where 1=1  %s  %s order by id desc",
-             id==null?"":"and id = "+id, title==null?"":" and title like %"+title+"%"  ), blog_entity.class,p);
+             id==null?"":"and id = "+id, title==null?"":" and title like %"+title.replaceAll(" ","")+"%"  ), blog_entity.class,p);
         Page page1=new Page<>();
         POJOUtil.copyProperties(p,page1);
         return Result.sucess(page1);
