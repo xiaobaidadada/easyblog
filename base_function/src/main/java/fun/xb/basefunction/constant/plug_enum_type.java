@@ -3,7 +3,7 @@ package fun.xb.basefunction.constant;
 
 
 
-public enum plug_enum {
+public enum plug_enum_type {
 
     index(1,"主页插件") ,
 
@@ -14,7 +14,7 @@ public enum plug_enum {
 
     private String message;
 
-    plug_enum(int type,String message){
+    plug_enum_type(int type, String message){
         this.message = message;
         this.type = type;
     }

@@ -39,4 +39,9 @@ public class js_plug_entity {
      */
     Integer type;
 
+    /**
+     * 插件名字
+     */
+    String name;
+
 }

@@ -6,6 +6,7 @@ import java.util.Collection;
 
 /**
  * 进行对象，集合元素之间的属性复制，设置值，计算后复制等操作
+ * 但是目前不能操作类的父类的属性
  */
 public class POJOUtil {
 

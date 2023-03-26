@@ -2,12 +2,14 @@ package fun.xb.web.controller.admin;
 
 
 import fun.xb.basefunction.constant.blog_constant;
+import fun.xb.basefunction.constant.plug_constant;
 import fun.xb.basefunction.entity.css_plug_entity;
 import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.SqlSession;
 import fun.xb.easyorm.util.easyormPage;
+import fun.xb.web.vo.plug_static;
 import fun.xb.web.vo.plug_vo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,9 +36,7 @@ public class CssPlugController {
     @PostMapping("/save")
     public Result logup(plug_vo vo) {
         css_plug_entity plug = new css_plug_entity();
-//        Date d = new Date();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String dateNowStr = sdf.format(d);
+
         plug.setTime(System.currentTimeMillis());
 
         POJOUtil.copyProperties(vo, plug,(v, o)->{
@@ -95,7 +93,7 @@ public class CssPlugController {
      */
     @GetMapping("get")
     public Result get(String id){
-        List<css_plug_entity> list=session.select("select * from js_plug where id=?", css_plug_entity.class,id);
+        List<css_plug_entity> list=session.select("select * from css_plug where id=?", css_plug_entity.class,id);
         return Result.sucess(list.get(0));
     }
 
@@ -104,14 +102,33 @@ public class CssPlugController {
      * @return
      */
     @GetMapping("getP")
-    public Result getP(Integer size,Integer num){
+    public Result getP(Integer size,Integer page,Long id ,String name,Integer type){
         easyormPage<css_plug_entity> p=new easyormPage();
-        p.setPage(num);
+        p.setPage(page);
         p.setSize(size);
-        session.selectPage("select * from css_plug order by sort desc", css_plug_entity.class,p);
+
+        session.selectPage(String.format("select * from css_plug where 1=1  %s %s %s order by sort desc",
+                id==null?"":"and id = "+id,
+                type==null?"":"and type = "+type,
+                name==null?"":" and name like %"+name.replaceAll(" ","")+"%"  ), css_plug_entity.class,p);
         Page page1=new Page<>();
         POJOUtil.copyProperties(p,page1);
         return Result.sucess(page1);
+    }
+
+    /**
+     * 获取统计接口
+     *
+     * @return
+     */
+    @GetMapping("get_static")
+    public Result<plug_static> get_static_info(Integer type) {
+
+        Long total = session.selectCount("select * from css_plug where type = ?",type);
+
+        css_plug_entity entity = session.selectOne("select * from css_plug where type = ? and on_off = ? ",css_plug_entity.class,type, plug_constant.on);
+
+        return Result.sucess(plug_static.build().plug_total(total).using_name(entity.getName()));
     }
 
 }
