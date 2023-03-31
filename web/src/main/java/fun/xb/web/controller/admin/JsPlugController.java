@@ -137,7 +137,7 @@ public class JsPlugController {
 
         js_plug_entity entity = session.selectOne("select * from js_plug where type = ? and on_off = ? ",js_plug_entity.class,type, plug_constant.on);
 
-        return Result.sucess(plug_static.build().plug_total(total).using_name(entity.getName()));
+        return Result.sucess(plug_static.build().plug_total(total).using_name(entity==null?"无数据": entity.getName()));
     }
 
 }
