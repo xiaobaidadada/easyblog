@@ -39,15 +39,15 @@ SqlSession session;
      * @return
      */
     @PostMapping("/save")
-    public Result upload(EssayVO essay) {
+    public Result upload(@RequestBody  EssayVO essay) {
         blog_entity blog = new blog_entity();
         essay.verify();
         POJOUtil.copyProperties(essay, blog,(v,o)->{
             o.setType_id(v.getType());
-            o.setId(null);
         });
-        blog.setId(null);
+
         if(essay.getId()==-1){
+            blog.setId(null);
             session.insert(blog);
             return Result.sucess(blog.getId());
         }

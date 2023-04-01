@@ -12,10 +12,7 @@ import fun.xb.easyorm.util.easyormPage;
 import fun.xb.web.vo.plug_static;
 import fun.xb.web.vo.plug_vo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,15 +31,15 @@ public class CssPlugController {
      * @return
      */
     @PostMapping("/save")
-    public Result logup(plug_vo vo) {
+    public Result logup(@RequestBody plug_vo vo) {
         css_plug_entity plug = new css_plug_entity();
 
         plug.setTime(System.currentTimeMillis());
 
         POJOUtil.copyProperties(vo, plug,(v, o)->{
-            o.setId(null);
         });
         if(vo.getId()==-1){
+            vo.setId(null);
             plug.setSort(0);
             plug.setOn_off(blog_constant.plug_off);
             session.insert(plug);
@@ -50,12 +47,11 @@ public class CssPlugController {
         }
         else {
             if(vo.getOn_off()== blog_constant.plug_on){
-                Long p1 = session.selectCount("select count(*) from js_plug where type =? on_off = ?",vo.getType(), blog_constant.plug_on);
+                Long p1 = session.selectCount("select count(*) from css_plug where type =? and on_off = ?",vo.getType(), blog_constant.plug_on);
                 if(p1>1){
                     return Result.fail("只能有一个插件被设置成开启");
                 }
                 else {
-                    session.select("update js_plug set on_off =0 where on_off = 1 ");
                     plug.setSort(1);
                 }
             }

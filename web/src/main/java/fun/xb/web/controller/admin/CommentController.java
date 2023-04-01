@@ -70,7 +70,7 @@ public class CommentController {
      */
     @PostMapping("/update")
     @ResponseBody
-    public Result comment(CommentVO commentVO) {
+    public Result comment(@RequestBody CommentVO commentVO) {
 
         comment_entity comment = new comment_entity();
 //        Date d = new Date();
@@ -79,11 +79,10 @@ public class CommentController {
         comment.setTime(System.currentTimeMillis());
 
         POJOUtil.copyProperties(commentVO, comment,(v,o)->{
-            o.setBlog_id(v.getEssay_id());
-            o.setId(null);
+//            o.setBlog_id(v.getEssay_id());
         });
-        comment.setId(null);
         if(commentVO.getId()==-1){
+            comment.setId(null);
             session.insert(comment);
             return Result.sucess(comment.getId());
         }

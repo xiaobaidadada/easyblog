@@ -14,10 +14,7 @@ import fun.xb.easyorm.util.easyormPage;
 import fun.xb.web.vo.plug_static;
 import fun.xb.web.vo.plug_vo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,7 +34,7 @@ public class JsPlugController {
      * @return
      */
     @PostMapping("/save")
-    public Result logup(plug_vo vo) {
+    public Result logup(@RequestBody plug_vo vo) {
         js_plug_entity plug = new js_plug_entity();
 //        Date d = new Date();
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -45,9 +42,10 @@ public class JsPlugController {
         plug.setTime(System.currentTimeMillis());
 
         POJOUtil.copyProperties(vo, plug,(v, o)->{
-            o.setId(null);
+
         });
         if(vo.getId()==-1){
+            vo.setId(null);
             plug.setSort(0);
             plug.setOn_off(blog_constant.plug_off);
             session.insert(plug);
@@ -64,7 +62,6 @@ public class JsPlugController {
 
                 //判断是否唯一
                 else {
-                    session.select("update js_plug set on_off =0 where on_off = 1 ");
                     plug.setSort(1);
                 }
             }

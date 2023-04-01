@@ -16,6 +16,9 @@ public class blog_entity {
 
     String context;
 
+    //转义成HTML的数据
+    String context_html;
+
     Long time_created;
 
     Long time_update;
