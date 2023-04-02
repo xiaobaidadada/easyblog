@@ -46,7 +46,7 @@ public interface SqlSession {
     public <T> int updateById(T dto) ;
 
     /**
-     * 通过where sql语句更新记录
+     * 通过where sql语句更新记录 不用写where关键字
      * @param dto
      * @param whereSql
      * @param parms

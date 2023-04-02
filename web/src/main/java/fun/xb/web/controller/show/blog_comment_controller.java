@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @ResponseBody
-@RequestMapping("/comment")
+@RequestMapping("/comment_for")
 public class blog_comment_controller {
 
     /**

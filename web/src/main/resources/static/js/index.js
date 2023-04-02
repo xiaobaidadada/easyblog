@@ -1,7 +1,7 @@
 
 
 
-let essay_index=0;//文章篇数
+let essay_index=1;//文章篇数，不在从0
 let essay_type=0;//散文类型
 let url=''
 //
@@ -56,12 +56,7 @@ function updateessay(){
 
 }
 
-window.onload=function (){
-    load_essaytype();//加载全部文章类别
-    updateessay();//加载六篇文章
-    indexload();//首页访问次数增加
 
-}
 
 let load_essaytype=function (){
     let http = new XMLHttpRequest();
@@ -196,5 +191,14 @@ keycode   13 = Enter 回车
         }
         http.send(JSON.stringify(data));
     }
+
+}
+
+
+//首次查询
+window.onload=function (){
+    load_essaytype();//加载全部文章类别
+    updateessay();//加载六篇文章
+    indexload();//首页访问次数增加
 
 }

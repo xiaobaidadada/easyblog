@@ -39,7 +39,7 @@ public class CssPlugController {
         POJOUtil.copyProperties(vo, plug,(v, o)->{
         });
         if(vo.getId()==-1){
-            vo.setId(null);
+            plug.setId(null);
             plug.setSort(0);
             plug.setOn_off(blog_constant.plug_off);
             session.insert(plug);

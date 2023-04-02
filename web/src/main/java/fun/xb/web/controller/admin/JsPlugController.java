@@ -45,7 +45,7 @@ public class JsPlugController {
 
         });
         if(vo.getId()==-1){
-            vo.setId(null);
+            plug.setId(null);
             plug.setSort(0);
             plug.setOn_off(blog_constant.plug_off);
             session.insert(plug);
@@ -55,7 +55,7 @@ public class JsPlugController {
             if(vo.getOn_off()== blog_constant.plug_on){
                 //判断是否唯一
 
-                Long p1 = session.selectCount("select count(*) from js_plug where type =? on_off = ?",vo.getType(), blog_constant.plug_on);
+                Long p1 = session.selectCount("select count(*) from js_plug where type =? and on_off = ?",vo.getType(), blog_constant.plug_on);
                 if(p1>1){
                     return Result.fail("只能有一个插件被设置成开启");
                 }

@@ -1,22 +1,27 @@
 package fun.xb.web.vo;
 
+import lombok.Data;
+
 /**
  * 登录注册
  */
+@Data
 public class AdminVO {
 
-    private String username;
+     String username;
 
-    private String oldUsername;
+     String oldUsername;
 
-    private String password;
+     String password;
 
-    private String oldPassword;
+     String oldPassword;
 
-    private String code;
+     String code;
 
     /*
     用于修改账号密码等判断
      */
-    private int type;
+     int type;
+
+
 }

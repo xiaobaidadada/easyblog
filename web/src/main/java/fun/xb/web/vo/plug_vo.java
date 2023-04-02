@@ -29,4 +29,9 @@ public class plug_vo {
      */
     Integer type;
 
+    /**
+     * 插件名字
+     */
+    String name;
+
 }

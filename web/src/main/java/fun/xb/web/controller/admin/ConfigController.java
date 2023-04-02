@@ -1,7 +1,10 @@
 package fun.xb.web.controller.admin;
 
+import fun.xb.basefunction.entity.dict_entity;
 import fun.xb.common.vo.Result;
+import fun.xb.easyorm.service.SqlSession;
 import fun.xb.web.vo.ConfigVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -12,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/config",produces = {"text/html;charset=UTF-8;", "application/json;charset=UTF-8;"})//添加produces，根据协议缩小范围
 public class ConfigController {
 
+
+    @Autowired
+    SqlSession session;
 
     /**
      * 获取当前当前数据保存方式
@@ -36,11 +42,19 @@ public class ConfigController {
     }
 
     /**
-     * 设置具体的位置数据
+     * 设置用户信息
      */
-    @PostMapping("/setting")
-    public Result setting(ConfigVO configVO){
-        //todo
+    @PostMapping("/set_user")
+    public Result setting(@RequestBody ConfigVO configVO){
+
+        dict_entity entity = new dict_entity();
+        entity.setValue(configVO.getUsername());
+        session.updateByWhereSql(entity," name = 'username' ");
+
+
+        entity.setValue(configVO.getPassword());
+        session.updateByWhereSql(entity," name = 'password' ");
+
         return Result.sucess();
     }
 }

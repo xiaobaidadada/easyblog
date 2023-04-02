@@ -1,9 +1,10 @@
 package fun.xb.web.controller.admin;
 
 
+import fun.xb.basefunction.constant.sys_constant;
 import fun.xb.common.vo.Result;
+import fun.xb.web.vo.file_vo;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -12,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文件管理，目前只做图床管理
@@ -20,32 +23,32 @@ import java.time.format.DateTimeFormatter;
 @RestController
 public class file_controller {
 
-    static String shangpin_path = "path";
+     String file_path = sys_constant.file_home_path;
 
-    @PostMapping("upload_images")
-    public void publish_images(HttpServletRequest request, @RequestParam(value = "file",required = false) MultipartFile file, @RequestParam("shangpin_id") String shangpin_id)  {
+    @PostMapping("/upload_images")
+    public Result publish_images(HttpServletRequest request, @RequestParam(value = "files",required = false) MultipartFile [] files)  {
 
-        if (request.getAttribute("user_openid")!=null){
+
             try {
-                String file_new=hash_file_name(file.getOriginalFilename(), (String) request.getAttribute("user_id"));//第一个参数是获取的文件类型
-                System.out.println(shangpin_path+file_new);
-                File outfile =new File(shangpin_path+file_new);
-                file.transferTo(outfile);//写入文件
+                System.out.println(files.length);
+                for(MultipartFile file: files){
+//                    String file_new= hash_name(file.getOriginalFilename(), "(String) request.getAttribute(\"user_id\")");//第一个参数是获取的文件类型
+//                    System.out.println(images_file +file_new);
+//                    System.out.println(file.getOriginalFilename());
+//                    String[] file_name_list = file.getOriginalFilename().split("\\.");
+                    File outfile =new File(file_path +file.getOriginalFilename());
+                    file.transferTo(outfile);//写入文件
+                }
 
 
-                //todo
             }catch ( IOException e){
-
+                return Result.fail();
             }
 
-        }
-
+            return Result.sucess();
     }
 
-    public String hash_file_name(String file_name, String orstr) {
-        String ymd = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return DigestUtils.sha1Hex(file_name + orstr + ymd);
-    }
+
 
 
     /**
@@ -54,7 +57,7 @@ public class file_controller {
      * @param file
      * @param shangpin_id
      */
-    @GetMapping("get_image")
+    @GetMapping("/get_image")
     public void get_file(HttpServletRequest request, @RequestParam(value = "file",required = false) MultipartFile file, @RequestParam("shangpin_id") String shangpin_id)  {
 
 
@@ -66,15 +69,39 @@ public class file_controller {
 
     /**
      * 获取文件夹下的文件信息
+     * 不做后端分页的了，一个文件夹的内容，让前端自己做分页展示
      * @param request
-     * @param file
-     * @param shangpin_id
      */
     @GetMapping("get_file_info")
-    public Result get_file_info(HttpServletRequest request, @RequestParam(value = "file",required = false) MultipartFile file, @RequestParam("shangpin_id") String shangpin_id)  {
+    public Result<List<file_vo>> get_file_info(HttpServletRequest request, @RequestParam(value = "folder_name",required = false) String folder_name)  {
 
-            //todo
-          return Result.sucess();
+//        String host = request.getScheme()+"://"+ request.getServerName()+":"+request.getServerPort();
+        String host = "";
+        File dir = new File(file_path+(folder_name==null?"":folder_name));
+
+        //返回展示列表
+        List<file_vo> vo_list = new ArrayList<>();
+
+        if(dir.isDirectory() || !dir.exists()){
+            //是存在的目录
+
+            //获取所有的目录
+            File[] files = dir.listFiles();
+
+            if(files!=null)
+            for(File f : files){
+//                System.out.println(f.getAbsolutePath());
+//                System.out.println(f.getName());
+                vo_list.add(file_vo.build().file_type(
+                        f.isFile()?1:2
+                ).name(f.getName()).url(
+                        f.isFile()?host+"file_public/show?file_name="+f.getName():host+"file/get_file_info?folder_name="+f.getName()
+                ));
+            }
+
+        }
+
+          return Result.sucess(vo_list);
         }
 
 

@@ -2,7 +2,10 @@ package fun.xb.web.controller.admin;
 
 
 import fun.xb.basefunction.entity.blog_entity;
+import fun.xb.basefunction.entity.type_entity;
+import fun.xb.basefunction.service.markdown.re.MdMain;
 import fun.xb.common.POJOUtil;
+import fun.xb.common.utils.utils;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.SqlSession;
@@ -45,13 +48,19 @@ SqlSession session;
         POJOUtil.copyProperties(essay, blog,(v,o)->{
             o.setType_id(v.getType());
         });
+        StringBuffer directory = new StringBuffer();
+        String md_context = MdMain.toHtml(blog.getContext(),directory);
+//        String md_context = utils.regex(blog.getContext(),directory);
+        blog.setContext_html(md_context);
+        blog.setDirectory(directory.toString());
 
         if(essay.getId()==-1){
-            blog.setId(null);
+
             session.insert(blog);
             return Result.sucess(blog.getId());
         }
         else {
+
             if(session.updateById(blog)!=0){
                 return Result.sucess();
             }
@@ -59,6 +68,16 @@ SqlSession session;
                 return Result.fail();
             }
         }
+    }
+
+    /**
+     * 获取所有文章类型
+     * @return
+     */
+    @GetMapping("/type")
+    public Result getType(){
+        List<type_entity> list = session.select("select * from type",type_entity.class);
+        return Result.sucess(list);
     }
 
     /**

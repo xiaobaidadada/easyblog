@@ -80,11 +80,15 @@ public class Result<T>  {
     }
 
     public static <T> Result<T> fail(String smg){
-        return new Result<>(false,10,smg,null);
+        return new Result<>(false,2,smg,null);
+    }
+
+    public static <T> Result<T> fail(int code){
+        return new Result<>(false,code,null,null);
     }
 
     public static <T> Result<T> fail(){
-        return new Result<>(false,10,"",null);
+        return new Result<>(false,2,"",null);
     }
 
 }

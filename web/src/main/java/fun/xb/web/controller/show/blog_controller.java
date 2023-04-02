@@ -29,6 +29,8 @@ public class blog_controller {
     public String get(HttpServletRequest request, @PathVariable("id")int id, Model model){
         model.addAttribute("title","欧克");
         blog_entity b=session.selectOne("select * from blog where id = ?",blog_entity.class,id);
+        //临时处理
+        b.setContext(b.getContext_html());
         model.addAttribute("blog",b);
         return "blog";
     }

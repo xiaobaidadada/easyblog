@@ -52,7 +52,15 @@ public class index_controller {
         int index= (int) object.get("essay_index"),
                 type= (int) object.get("essay_type");
 
-        List<blog_entity> list = session.select("select * from blog where type_id =? limit ?,?",blog_entity.class,type,index,6);
+        List<blog_entity> list = null;
+        if(type == 0){
+            //查全部
+          list =  session.select("select * from blog  limit ?,?",blog_entity.class,index,6);
+        }
+        else{
+            list =  session.select("select * from blog where type_id =? limit ?,?",blog_entity.class,type,index,6);
+        }
+
 
         return Result.sucess(list);
     }
