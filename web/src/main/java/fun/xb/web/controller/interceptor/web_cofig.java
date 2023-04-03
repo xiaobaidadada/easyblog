@@ -18,7 +18,10 @@ public class web_cofig  implements WebMvcConfigurer {
                 "/index/**",
                 "/blog/**",
                 "/comment_for/**",
-                "/admin/**",
+                "/admin/**",//后台登录
+                "/css/**",
+                "/js/**",
+                "/favicon.ico",//图标？
                 "/");
     }
 

@@ -46,7 +46,6 @@ SqlSession session;
         blog_entity blog = new blog_entity();
         essay.verify();
         POJOUtil.copyProperties(essay, blog,(v,o)->{
-            o.setType_id(v.getType());
         });
         StringBuffer directory = new StringBuffer();
         String md_context = MdMain.toHtml(blog.getContext(),directory);
@@ -78,6 +77,28 @@ SqlSession session;
     public Result getType(){
         List<type_entity> list = session.select("select * from type",type_entity.class);
         return Result.sucess(list);
+
+    }
+
+
+    /**
+     * 获取所有文章类型
+     * @return
+     */
+    @PostMapping("/add_type")
+    public Result addType(@RequestBody type_entity entity){
+
+
+
+        try {
+            session.insert(entity);
+        }
+        catch (Exception e){
+            return Result.fail(e.toString());
+        }
+
+
+        return Result.sucess();
     }
 
     /**
@@ -107,12 +128,13 @@ SqlSession session;
      * @return
      */
     @GetMapping("getP")
-    public Result<Page> getPage(Integer size,Integer page,Long id ,String title) {
+    public Result<Page> getPage(Integer size,Integer page,Long id ,String title,String blog_type_id) {
         easyormPage<blog_entity> p=new easyormPage();
         p.setPage(page);
         p.setSize(size);
         session.selectPage(String.format("select * from blog where 1=1  %s  %s order by id desc",
-             id==null?"":"and id = "+id,
+             id==null?"":" and id = "+id,
+                blog_type_id==null?"":"a nd type_id = "+blog_type_id,
              title==null?"":" and title like %"+title.replaceAll(" ","")+"%"  ), blog_entity.class,p);
         Page page1=new Page<>();
         POJOUtil.copyProperties(p,page1);

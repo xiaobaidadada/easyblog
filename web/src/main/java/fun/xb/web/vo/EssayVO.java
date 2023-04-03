@@ -16,7 +16,8 @@ public class EssayVO {
 
      private String title;
 
-     private Integer type;
+     //类型的id
+     private Integer type_id;
 
      private String context;
 
