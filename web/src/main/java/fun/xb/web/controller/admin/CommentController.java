@@ -68,7 +68,7 @@ public class CommentController {
      * @param commentVO
      * @return
      */
-    @PostMapping("/update")
+    @PostMapping("/del")
     @ResponseBody
     public Result comment(@RequestBody CommentVO commentVO) {
 

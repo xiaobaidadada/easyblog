@@ -1,5 +1,5 @@
 
-
+import asy_get from "./utils.js";
 
 let essay_index=1;//文章篇数，不在从0
 let essay_type=0;//散文类型
@@ -194,6 +194,20 @@ keycode   13 = Enter 回车
 
 }
 
+//获取网站信息
+let get_web_info=function(){
+
+    asy_get("index/get_web", ``, data => {
+
+        if (data.code == "未知") alert("请求出错")
+        else {
+            let result = data.data;
+            document.querySelector("#website_name").innerHTML=result.website_name;
+            document.querySelector("#website_about").innerHTML=result.website_about;
+            document.querySelector("#website_about_added").innerHTML=result.website_about_added;
+        }
+    });
+}
 
 //首次查询
 window.onload=function (){
@@ -201,4 +215,7 @@ window.onload=function (){
     updateessay();//加载六篇文章
     indexload();//首页访问次数增加
 
+
+    //加载网站信息
+    get_web_info();
 }

@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" href="/js/prism/prism.css">
     <script src="/js/prism/prism.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="/js/index.js" type="module"></script>
 
     <!--    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">-->
 <style th:inline="css">
@@ -30,7 +30,7 @@
 <div class="wrapper guan">
     <nav class="row bg-light ">
 
-        <div class="col-sm-4 "><p class=".text-center text">洛手手</p></div>
+        <div class="col-sm-4 "><p class=".text-center text" id="website_name">洛手手</p></div>
         <div class="col-sm-3  "></div>
         <div class="col-sm col-12">
             <div class="row">
@@ -81,9 +81,9 @@
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote ">
-                        <p>白保祥的乱七八糟笔记</p>
+                        <p id="website_about">白保祥的乱七八糟笔记</p>
 
-                        <footer class="blockquote-footer">邮箱 <cite title="Source Title">xiaobai2032@gmail.com</cite></footer>
+                        <footer class="blockquote-footer" > <cite title="Source Title" id="website_about_added">xiaobai2032@gmail.com</cite></footer>
                     </blockquote>
                 </div>
             </div>
@@ -94,7 +94,7 @@
 
 <script>
     
-    [[${js}]]
+    // [[${js}]]
 </script>
 
 </body>

@@ -2,12 +2,10 @@ package fun.xb.web.controller.show;
 
 import com.alibaba.fastjson.JSONObject;
 import fun.xb.basefunction.constant.blog_constant;
-import fun.xb.basefunction.entity.blog_entity;
-import fun.xb.basefunction.entity.css_plug_entity;
-import fun.xb.basefunction.entity.js_plug_entity;
-import fun.xb.basefunction.entity.type_entity;
+import fun.xb.basefunction.entity.*;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.SqlSession;
+import fun.xb.web.vo.web_info;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,6 +93,27 @@ public class index_controller {
         List<blog_entity> list = session.select("select * from blog where type_id =? limit 0,6",blog_entity.class,id);
 
         return Result.sucess(list);
+    }
+
+
+    /**
+     * 获取网站信息
+     */
+    @GetMapping("/get_web")
+    public Result<web_info> getWebInfo(){
+
+        web_info web_info = new web_info();
+        List<dict_entity> dict_list = session.select("select * from dict where type = 2",dict_entity.class);
+        dict_list.forEach(v->{
+            if(v.getName().equals("website_name")){
+                web_info.setWebsite_name(v.getValue());
+            } else if(v.getName().equals("website_about_added")){
+                web_info.setWebsite_about_added(v.getValue());
+            } else if(v.getName().equals("website_about")){
+                web_info.setWebsite_about(v.getValue());
+            }
+        });
+        return Result.sucess(web_info);
     }
 
 }
