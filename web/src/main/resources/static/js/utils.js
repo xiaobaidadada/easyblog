@@ -119,7 +119,7 @@ function asy_post_by_formData(path, query, formData,handle,navigate) {
     fetch(config.host + path + (query!=null?"?"+query:""), {
         method: "POST",
         headers:{
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
 
         },
         body: formData

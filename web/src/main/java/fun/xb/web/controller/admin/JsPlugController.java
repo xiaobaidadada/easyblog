@@ -29,6 +29,44 @@ public class JsPlugController {
     @Autowired
     SqlSession session;
 
+
+    /**
+     * 设置开关状态
+
+     * @return
+     */
+    @PostMapping("/set_on_off")
+    public Result set_on_off(@RequestBody plug_vo vo) {
+        if(vo==null){
+            return Result.fail();
+        }
+        js_plug_entity plug = new js_plug_entity();
+        plug.setId(vo.getId());
+        plug.setOn_off(vo.getOn_off());
+        plug.setType(vo.getType());
+        if(vo.getOn_off()==0){
+            //开启
+            plug.setSort(1);
+            if(session.updateById(plug)!=0){
+                plug.setId(null);
+                //关闭
+                plug.setOn_off(1);
+                plug.setSort(0);
+                if(session.updateByWhereSql(plug," on_off = 0 and type = ? and id != ? ",vo.getType(),vo.getId()) != 0){
+                    return Result.sucess();
+                };
+            }
+        }else{
+            //关闭
+            if(session.updateById(plug)!=0){
+                return Result.sucess();
+            }
+        }
+
+        return Result.fail();
+    }
+
+
     /**
      * 上传插件
      * @return

@@ -1,9 +1,12 @@
 package fun.xb.web.controller.show;
 
 import fun.xb.basefunction.constant.blog_constant;
+import fun.xb.basefunction.constant.plug_enum_type;
 import fun.xb.basefunction.entity.css_plug_entity;
+import fun.xb.basefunction.entity.dict_entity;
 import fun.xb.basefunction.entity.js_plug_entity;
 import fun.xb.easyorm.service.SqlSession;
+import fun.xb.web.vo.web_info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +23,9 @@ public class index {
     @RequestMapping("/")
     public String getString(Model  model){
 
-        List<js_plug_entity> js_list=session.select("select * from js_plug where on_off =?", js_plug_entity.class, blog_constant.plug_on);
-        List<css_plug_entity> css_list=session.select("select * from js_plug where on_off=?", css_plug_entity.class,blog_constant.plug_on);
+        //加载插件
+        List<js_plug_entity> js_list=session.select("select * from js_plug where on_off =? and type = ? ", js_plug_entity.class, blog_constant.plug_on, plug_enum_type.index.getType());
+        List<css_plug_entity> css_list=session.select("select * from css_plug where on_off=? and type = ? ", css_plug_entity.class,blog_constant.plug_on,plug_enum_type.index.getType());
 
         if(js_list.size()!=0){
             js_plug_entity js = js_list.get(0);
@@ -34,6 +38,19 @@ public class index {
             model.addAttribute("css",css.getContext());
         }
 
+    //加载网站信息
+        web_info web_info = new web_info();
+        List<dict_entity> dict_list = session.select("select * from dict where type = 2",dict_entity.class);
+        dict_list.forEach(v->{
+            if(v.getName().equals("website_name")){
+                web_info.setWebsite_name(v.getValue());
+            } else if(v.getName().equals("website_about_added")){
+                web_info.setWebsite_about_added(v.getValue());
+            } else if(v.getName().equals("website_about")){
+                web_info.setWebsite_about(v.getValue());
+            }
+        });
+        model.addAttribute("info",web_info);
 
 
         return "index";

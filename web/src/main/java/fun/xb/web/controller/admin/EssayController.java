@@ -12,14 +12,18 @@ import fun.xb.easyorm.service.SqlSession;
 import fun.xb.easyorm.util.easyormPage;
 import fun.xb.web.vo.EssayVO;
 import fun.xb.web.vo.essay_static;
+import fun.xb.web.vo.essay_vo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 管理文章的控制器
@@ -55,6 +59,7 @@ SqlSession session;
 
         if(essay.getId()==-1){
 
+            blog.setClick(0);
             session.insert(blog);
             return Result.sucess(blog.getId());
         }
@@ -134,10 +139,46 @@ SqlSession session;
         p.setSize(size);
         session.selectPage(String.format("select * from blog where 1=1  %s  %s order by id desc",
              id==null?"":" and id = "+id,
-                blog_type_id==null?"":"a nd type_id = "+blog_type_id,
+                blog_type_id==null?"":"and type_id = "+blog_type_id,
              title==null?"":" and title like %"+title.replaceAll(" ","")+"%"  ), blog_entity.class,p);
-        Page page1=new Page<>();
-        POJOUtil.copyProperties(p,page1);
+        Page<essay_vo> page1=new Page<>();
+
+
+        POJOUtil.copyProperties(p,page1,(s,o)->{
+            if(s.getList()!=null && s.getList().size()!=0){
+                List<blog_entity> list = s.getList();
+                List<Integer> ids = list.stream().map(blog_entity::getId).toList();
+
+                String in_sql = "(";
+                in_sql+=ids.get(0);
+                for(int i =1 ;i<ids.size() ;i++){
+                        in_sql+=","+ids.get(i);
+                }
+                in_sql+=")";
+
+                List<type_entity> types = session.select("select * from type where id in " +in_sql,type_entity.class);
+
+                Map<Integer,String> type_map = new HashMap<>();
+                types.forEach(v->{
+                    type_map.put(v.getId(),v.getType_name());
+                });
+
+                List<essay_vo> vos = new ArrayList<>();
+                for(blog_entity blog : list){
+                    essay_vo vo = new essay_vo();
+                    vo.setId(blog.getId());
+                    vo.setType(type_map.getOrDefault(blog.getType_id(),"无"));
+                    vo.setTitle(blog.getTitle());
+                    vo.setClick(blog.getClick());
+                    vos.add(vo);
+                }
+
+                o.setList(vos);
+
+            }
+
+        });
+
         return Result.sucess(page1);
     }
 

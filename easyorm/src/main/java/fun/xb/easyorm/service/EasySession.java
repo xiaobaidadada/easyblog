@@ -233,7 +233,7 @@ public class EasySession implements SqlSession {
 
         int i= 0;
         Object [] colums=columnValueS.stream().toArray();
-        Object [] totalArr=new Object[parms.length+1];
+        Object [] totalArr=new Object[parms.length+colums.length];
         System.arraycopy(colums,0,totalArr,0,colums.length);
         System.arraycopy(parms,0,totalArr,colums.length,parms.length);
 

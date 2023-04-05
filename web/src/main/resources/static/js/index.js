@@ -147,6 +147,8 @@ function indexload(){
 
 //查询
 function query(event){
+
+    console.log(111)
     /*
     * keycode    8 = BackSpace 回格
 keycode    9 = Tab
@@ -158,13 +160,13 @@ keycode   13 = Enter 回车
         let http = new XMLHttpRequest();
         let input=event.currentTarget.value;
 
-        http.open('post', url+'/index/queryblog',true);//设置ajax参数
+        http.open('get', url+`/index/queryblog?q=${input}`,true);//设置ajax参数
         http.onreadystatechange = function (e) {
             // console.log(http.responseText)
             if (http.readyState == 4 && http.status == 200 ) {
                 document.querySelector("#essay > div").innerHTML=""
                 // alert(http.responseText+'成功')
-                let array=JSON.parse(http.responseText)['blog'];
+                let array=JSON.parse(http.responseText)['value'];
                 if (array.length!=0)
                     for (let t in array){
                         addEssayToDiv(array[t]);
@@ -185,11 +187,7 @@ keycode   13 = Enter 回车
         http.setRequestHeader("Content-Type","text/plain;charset=UTF-8;")//设置这个会分两次请求发送数据，application/json;会产生自动判断的跨域，vue测试的时候和服务器端口不一样，所以不用这个
         http.timeout=2000;
 
-        let data = {
-            'input': input,
-
-        }
-        http.send(JSON.stringify(data));
+        http.send();
     }
 
 }
@@ -209,6 +207,13 @@ let get_web_info=function(){
     });
 }
 
+//绑定事件
+function bind_document_event(){
+
+    document.querySelector("#exampleDataList").addEventListener("keyup",query)
+    document.querySelector("#get_more_essay").addEventListener("click",updateessay)
+}
+
 //首次查询
 window.onload=function (){
     load_essaytype();//加载全部文章类别
@@ -217,5 +222,8 @@ window.onload=function (){
 
 
     //加载网站信息
-    get_web_info();
+    // get_web_info();
+
+    //绑定事件
+    bind_document_event();
 }

@@ -2,6 +2,7 @@ package fun.xb.web.controller.show;
 
 import com.alibaba.fastjson.JSONObject;
 import fun.xb.basefunction.constant.blog_constant;
+import fun.xb.basefunction.constant.cache;
 import fun.xb.basefunction.entity.*;
 import fun.xb.common.vo.Result;
 import fun.xb.easyorm.service.SqlSession;
@@ -74,8 +75,8 @@ public class index_controller {
     @Transactional//不加也可以更新
     public String indexload(HttpServletRequest request){//发送的body为空不能有, @RequestBody String body
 
-//todo
-        System.out.println("统计");
+        cache.web_index_click_num +=1;
+
         return "ok";
     }
 
@@ -115,5 +116,26 @@ public class index_controller {
         });
         return Result.sucess(web_info);
     }
+
+
+    /**
+     * 查询博客
+     */
+    @GetMapping("/queryblog")
+    public Result<List<blog_entity>> queryblog(@RequestParam("q") String query){
+
+        query = "%"+query+"%";
+
+        List<blog_entity> list =  session.select("select * from blog  where title like ? or context like ? ",blog_entity.class,query,query);
+        list.forEach(v->{
+            v.setContext(null);
+            v.setContext_html(null);
+            v.setDirectory(null);
+        });
+
+
+        return Result.sucess(list);
+    }
+
 
 }
