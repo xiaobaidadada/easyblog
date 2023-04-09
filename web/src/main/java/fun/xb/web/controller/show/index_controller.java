@@ -75,7 +75,7 @@ public class index_controller {
     @Transactional//不加也可以更新
     public String indexload(HttpServletRequest request){//发送的body为空不能有, @RequestBody String body
 
-        cache.web_index_click_num +=1;
+        cache.web_index_click_num.addAndGet(1);
 
         return "ok";
     }

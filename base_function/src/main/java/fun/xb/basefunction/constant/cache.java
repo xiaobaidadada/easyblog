@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Component
 public class cache implements CommandLineRunner {
 
-    static public int web_index_click_num = 0;
+    //使用原子类，防止访问量过高时的冲突
+    static public AtomicInteger web_index_click_num = new AtomicInteger(0);
 
     @Autowired
     SqlSession session;
@@ -19,7 +24,9 @@ public class cache implements CommandLineRunner {
 
         dict_entity entity = session.selectOne("select * from dict where type =3 and name = 'web_index_click_num'",dict_entity.class);
 
-        web_index_click_num = Integer.parseInt(entity.getValue());
+        web_index_click_num.set(Integer.parseInt(entity.getValue()));
+
+
 
     }
 }
