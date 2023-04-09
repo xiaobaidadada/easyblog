@@ -9,6 +9,7 @@
         <module>easyorm</module>
         <module>web</module>
         <module>config</module>
+        <module>MyPersistence</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
