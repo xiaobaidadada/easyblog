@@ -1,7 +1,7 @@
 package fun.xb.web.controller.show;
 
-import fun.xb.basefunction.constant.sys_constant;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +15,8 @@ import java.io.*;
 @RestController
 public class show_public_file {
 
-     String file_path = sys_constant.file_home_path;
+    @Value("${easy.file.file_home_path}")
+    String file_path ;
 
     @RequestMapping("/show")
     public String fileDownLoad(HttpServletResponse response, @RequestParam("file_name") String fileName){

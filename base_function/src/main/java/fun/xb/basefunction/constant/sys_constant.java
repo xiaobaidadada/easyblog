@@ -5,7 +5,7 @@ package fun.xb.basefunction.constant;
 public class sys_constant {
 
     //文件目录 /是默认主程序启动的当前目录
-   public static String file_home_path = "/";
+//   public static String file_home_path = "/";
 
    //登录不合法 返回给前端代码
    static public int error_login = 3;

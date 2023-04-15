@@ -9,7 +9,7 @@
         <module>easyorm</module>
         <module>web</module>
         <module>config</module>
-        <module>easy-key-text</module>
+        <module>easy-full-key-text</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

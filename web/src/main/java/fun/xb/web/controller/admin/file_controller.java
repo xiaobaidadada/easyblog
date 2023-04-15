@@ -1,18 +1,15 @@
 package fun.xb.web.controller.admin;
 
 
-import fun.xb.basefunction.constant.sys_constant;
 import fun.xb.common.vo.Result;
 import fun.xb.web.vo.file_vo;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +21,8 @@ import java.util.List;
 @RestController
 public class file_controller {
 
-    String file_path = sys_constant.file_home_path;
+    @Value("${easy.file.file_home_path}")
+    String file_path ;
 
     @PostMapping("/upload_images")
     public Result publish_images(HttpServletRequest request, @RequestParam(value = "files", required = false) MultipartFile[] files, @RequestParam("path") String path) {

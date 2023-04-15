@@ -1,6 +1,8 @@
 package fun.xb.basefunction.entity;
 
 import fun.xb.easyorm.service.annotation.table;
+import fun.xb.full_text.service.annotation.text_column;
+import fun.xb.full_text.service.annotation.text_id;
 import lombok.Data;
 import fun.xb.easyorm.service.annotation.id;
 
@@ -10,10 +12,12 @@ import fun.xb.easyorm.service.annotation.id;
 public class blog_entity {
 
     @id
+    @text_id
     Integer id;
 
     String title;
 
+    @text_column
     String context;
 
     //转义成HTML的数据

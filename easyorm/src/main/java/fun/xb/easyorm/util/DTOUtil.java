@@ -189,9 +189,9 @@ public class DTOUtil {
 
 
     /**
-     * 给对象oo 特定的属性设置特定的值o
+     * 给对象oo 特定的属性设置特定的值value
      */
-    public static  void setPartOfProperty(Object oo,String name,Object o){
+    public static  void setPartOfProperty(Object oo,String name,Object value){
 
 
         Class target=oo.getClass();
@@ -201,8 +201,8 @@ public class DTOUtil {
                 if(fieldTarget.getName().equals(name)){
                     fieldTarget.setAccessible(true);
                     try {
-                        if(o!=null)
-                        fieldTarget.set(oo,TypeConverter.selfType_to_otherType(fieldTarget.getType().getTypeName(),o));
+                        if(value!=null)
+                        fieldTarget.set(oo,TypeConverter.selfType_to_otherType(fieldTarget.getType().getTypeName(),value));
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
