@@ -2,7 +2,7 @@ package fun.xb.web.controller.admin;
 
 import fun.xb.basefunction.entity.type_entity;
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.SqlSession;
+import fun.xb.easySqlorm.service.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

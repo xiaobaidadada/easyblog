@@ -1,6 +1,5 @@
 package fun.xb.web.vo;
 
-import fun.xb.easyorm.service.annotation.id;
 import lombok.Data;
 
 @Data

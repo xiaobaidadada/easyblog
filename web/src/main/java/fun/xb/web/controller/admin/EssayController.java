@@ -5,11 +5,10 @@ import fun.xb.basefunction.entity.blog_entity;
 import fun.xb.basefunction.entity.type_entity;
 import fun.xb.basefunction.service.markdown.re.MdMain;
 import fun.xb.common.POJOUtil;
-import fun.xb.common.utils.utils;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.SqlSession;
-import fun.xb.easyorm.util.easyormPage;
+import fun.xb.easySqlorm.service.SqlSession;
+import fun.xb.easySqlorm.util.easyormPage;
 import fun.xb.web.vo.EssayVO;
 import fun.xb.web.vo.essay_static;
 import fun.xb.web.vo.essay_vo;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 管理文章的控制器

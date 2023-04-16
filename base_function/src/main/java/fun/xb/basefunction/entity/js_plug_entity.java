@@ -1,7 +1,7 @@
 package fun.xb.basefunction.entity;
 
 
-import fun.xb.easyorm.service.annotation.table;
+import fun.xb.easySqlorm.service.annotation.table;
 import lombok.Data;
 
 @Data

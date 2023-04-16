@@ -2,14 +2,11 @@ package fun.xb.basefunction.job;
  
 import fun.xb.basefunction.constant.cache;
 import fun.xb.basefunction.entity.dict_entity;
-import fun.xb.easyorm.service.SqlSession;
+import fun.xb.easySqlorm.service.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
- 
-import java.text.SimpleDateFormat;
-import java.util.Date;
- 
+
 /**
  * 定时任务的使用
  * @author pan_junbiao

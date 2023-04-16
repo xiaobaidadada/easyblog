@@ -1,10 +1,10 @@
 package fun.xb.basefunction.entity;
 
-import fun.xb.easyorm.service.annotation.table;
-import fun.xb.full_text.service.annotation.text_column;
-import fun.xb.full_text.service.annotation.text_id;
+import fun.xb.easySqlorm.service.annotation.table;
+import fun.xb.easyFullTextorm.service.annotation.text_column;
+import fun.xb.easyFullTextorm.service.annotation.text_id;
 import lombok.Data;
-import fun.xb.easyorm.service.annotation.id;
+import fun.xb.easySqlorm.service.annotation.id;
 
 
 @Data

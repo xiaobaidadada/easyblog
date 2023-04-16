@@ -2,7 +2,7 @@ package fun.xb.web.main;
 
 
 
-import fun.xb.easyorm.service.EasySession;
+import fun.xb.easySqlorm.service.EasySession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;

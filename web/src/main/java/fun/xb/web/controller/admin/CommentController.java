@@ -5,19 +5,15 @@ import fun.xb.basefunction.entity.comment_entity;
 import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.SqlSession;
-import fun.xb.easyorm.util.easyormPage;
+import fun.xb.easySqlorm.service.SqlSession;
+import fun.xb.easySqlorm.util.easyormPage;
 import fun.xb.web.vo.CommentVO;
 import fun.xb.web.vo.comment_static;
-import fun.xb.web.vo.essay_static;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 后台评论系统

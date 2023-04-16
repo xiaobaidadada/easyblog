@@ -1,13 +1,11 @@
 package fun.xb.basefunction.constant;
 
 import fun.xb.basefunction.entity.dict_entity;
-import fun.xb.easyorm.service.SqlSession;
+import fun.xb.easySqlorm.service.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component

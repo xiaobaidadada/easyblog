@@ -4,13 +4,12 @@ package fun.xb.web.controller.admin;
 
 import fun.xb.basefunction.constant.blog_constant;
 import fun.xb.basefunction.constant.plug_constant;
-import fun.xb.basefunction.entity.css_plug_entity;
 import fun.xb.basefunction.entity.js_plug_entity;
 import fun.xb.common.POJOUtil;
 import fun.xb.common.vo.Page;
 import fun.xb.common.vo.Result;
-import fun.xb.easyorm.service.SqlSession;
-import fun.xb.easyorm.util.easyormPage;
+import fun.xb.easySqlorm.service.SqlSession;
+import fun.xb.easySqlorm.util.easyormPage;
 import fun.xb.web.vo.plug_static;
 import fun.xb.web.vo.plug_vo;
 import org.springframework.beans.factory.annotation.Autowired;

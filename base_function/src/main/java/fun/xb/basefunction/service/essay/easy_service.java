@@ -1,7 +1,7 @@
 package fun.xb.basefunction.service.essay;
 
 
-import fun.xb.easyorm.service.SqlSession;
+import fun.xb.easySqlorm.service.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

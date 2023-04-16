@@ -1,13 +1,12 @@
 package fun.xb.basefunction.entity;
 
 
-import fun.xb.easyorm.service.annotation.id;
-import fun.xb.easyorm.service.annotation.table;
+import fun.xb.easySqlorm.service.annotation.table;
 
 @table("static")
 public class static_entity {
 
-    @fun.xb.easyorm.service.annotation.id
+    @fun.xb.easySqlorm.service.annotation.id
     Integer id;
 
 

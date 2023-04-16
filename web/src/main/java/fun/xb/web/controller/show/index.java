@@ -5,7 +5,7 @@ import fun.xb.basefunction.constant.plug_enum_type;
 import fun.xb.basefunction.entity.css_plug_entity;
 import fun.xb.basefunction.entity.dict_entity;
 import fun.xb.basefunction.entity.js_plug_entity;
-import fun.xb.easyorm.service.SqlSession;
+import fun.xb.easySqlorm.service.SqlSession;
 import fun.xb.web.vo.web_info;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
