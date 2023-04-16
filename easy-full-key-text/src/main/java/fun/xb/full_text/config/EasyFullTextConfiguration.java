@@ -14,12 +14,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass(EasyFullTextFactory.class) //存在这个类才会实 例化本配置类
 @EnableConfigurationProperties(Properties.class) // 激活@ConfigurationProperties
-public class easyormConfiguration {
+public class EasyFullTextConfiguration {
 
     private Properties properties;
 
     @Autowired
-    public easyormConfiguration(Properties properties) {
+    public EasyFullTextConfiguration(Properties properties) {
         this.properties = properties;
     }
 

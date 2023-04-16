@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.easyorm.config.easyormConfiguration
+fun.xb.full_text.config.EasyFullTextConfiguration
