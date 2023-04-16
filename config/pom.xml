@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>fun.xb</groupId>
-            <artifactId>easyorm</artifactId>
+            <artifactId>easy-sql-orm</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>

@@ -15,16 +15,6 @@ public class Bold {
     static String start="<span class=\"md_bold\" />";
     static   String tail="</span>";
     private static final Pattern BOLD_PATTERN = Pattern.compile("\\*\\*(.+?)\\*\\*");
-//    static public String mdBoldeparse(String markdown){
-//        String html = markdown;
-//        Matcher boldMatcher = BOLD_PATTERN.matcher(html);
-//        while (boldMatcher.find()) {
-//            String boldText = boldMatcher.group(1);
-//            html = html.replace(boldMatcher.group(0), "<p class=\"md_bold\" />" + boldText + "</p>");
-//        }
-//
-//        return html;
-//    }
 
     public static String mdBoldeparse(String markdown) {
         String html = markdown;
@@ -40,4 +30,16 @@ public class Bold {
 
         return html;
     }
+
+    //    static public String mdBoldeparse(String markdown){
+//        String html = markdown;
+//        Matcher boldMatcher = BOLD_PATTERN.matcher(html);
+//        while (boldMatcher.find()) {
+//            String boldText = boldMatcher.group(1);
+//            html = html.replace(boldMatcher.group(0), "<p class=\"md_bold\" />" + boldText + "</p>");
+//        }
+//
+//        return html;
+//    }
+
 }

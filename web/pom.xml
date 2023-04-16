@@ -24,7 +24,7 @@
 
         <dependency>
             <groupId>fun.xb</groupId>
-            <artifactId>easyorm</artifactId>
+            <artifactId>easy-sql-orm</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
@@ -36,7 +36,7 @@
         </dependency>
         <dependency>
             <groupId>fun.xb</groupId>
-            <artifactId>easy-full-key-text</artifactId>
+            <artifactId>easy-full-text-orm</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>

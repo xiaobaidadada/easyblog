@@ -6,10 +6,10 @@
     <modules>
         <module>common</module>
         <module>base_function</module>
-        <module>easyorm</module>
+        <module>easy-sql-orm</module>
         <module>web</module>
         <module>config</module>
-        <module>easy-full-key-text</module>
+        <module>easy-full-text-orm</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

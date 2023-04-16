@@ -59,6 +59,7 @@ public class EasySession<T> implements FullTextSession<T> {
 //        IndexWriter writer = source.getWriter();
         //删除
         long num = delete(query_dto);
+        //todo 这一步还要先查询的一下复制一下别的不用被删除的字段，所以应该是先查询；在dto参数非空属性的覆盖；
         if (num != 0)
             //添加
             insert(dto);
