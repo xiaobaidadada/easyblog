@@ -16,7 +16,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 
-public class EasySession<T> implements FullTextSession<T> {
+public class EasyFullTextSession<T> implements FullTextSession<T> {
 
 
     //每一次创建对象，这个就会重新生成一次 todo 和easyorm问题一样，需要修改，现在没有spring会生成多个连接
@@ -24,7 +24,7 @@ public class EasySession<T> implements FullTextSession<T> {
 
     IndexWriter indexWriter;
 
-    public EasySession(EasyFullTextSource source) {
+    public EasyFullTextSession(EasyFullTextSource source) {
         this.source = source;
         this.indexWriter = source.getWriter();
 

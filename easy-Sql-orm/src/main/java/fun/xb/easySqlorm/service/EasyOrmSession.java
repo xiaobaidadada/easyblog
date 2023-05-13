@@ -18,10 +18,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * 会话工厂，默认开启驼峰转下划线；
  */
-public class EasySession implements SqlSession {
+public class EasyOrmSession implements SqlSession {
     private QueryRunner qr;
 
-    public EasySession(QueryRunner qr){
+    public EasyOrmSession(QueryRunner qr){
         this.qr=qr;
     }
     /**

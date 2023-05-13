@@ -2,7 +2,7 @@ package fun.xb.web.main;
 
 
 
-import fun.xb.easySqlorm.service.EasySession;
+import fun.xb.easySqlorm.service.EasyOrmSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -14,7 +14,7 @@ import java.util.List;
 public class Schedule {
 
     @Autowired
-    EasySession easySession;
+    EasyOrmSession easySession;
 
 
     //3.添加定时任务 每小时执行一次

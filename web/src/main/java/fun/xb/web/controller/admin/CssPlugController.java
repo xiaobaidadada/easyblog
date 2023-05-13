@@ -49,9 +49,10 @@ public class CssPlugController {
                 //关闭
                 plug.setOn_off(1);
                 plug.setSort(0);
-                if(session.updateByWhereSql(plug," on_off = 0 and type = ? and id != ? ",vo.getType(),vo.getId()) != 0){
+                //别的非0都要为1 关闭
+                session.updateByWhereSql(plug," on_off = 0 and type = ? and id != ? ",plug.getType(),vo.getId()) ;
                     return Result.sucess();
-                };
+
             }
         }else{
             //关闭

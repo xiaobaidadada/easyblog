@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConditionalOnClass(EasyFullTextFactory.class) //存在这个类才会实 例化本配置类
-@EnableConfigurationProperties(Properties.class) // 激活@ConfigurationProperties
+@EnableConfigurationProperties(FullTextProperties.class) // 激活@ConfigurationProperties
 public class EasyFullTextConfiguration {
 
-    private Properties properties;
+    private FullTextProperties properties;
 
     @Autowired
-    public EasyFullTextConfiguration(Properties properties) {
+    public EasyFullTextConfiguration(FullTextProperties properties) {
         this.properties = properties;
     }
 
@@ -27,7 +27,7 @@ public class EasyFullTextConfiguration {
     @Bean
 //    @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)//原型创建 不共用一个session，在这里公用一个 由dbutils来完成对连接池的调用
     @ConditionalOnMissingBean(EasyFullTextFactory.class)
-    public FullTextSession easyorm() {
+    public FullTextSession easyFullText() {
         EasyFullTextFactory factory = new EasyFullTextFactory(properties.getHomePath());
 
         return factory.createSession();

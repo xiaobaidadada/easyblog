@@ -1,7 +1,7 @@
 package fun.xb.easyFullTextorm.service.datasource;
 
 
-import fun.xb.easyFullTextorm.service.EasySession;
+import fun.xb.easyFullTextorm.service.EasyFullTextSession;
 import fun.xb.easyFullTextorm.service.FullTextSession;
 
 /**
@@ -21,7 +21,7 @@ public class EasyFullTextFactory {
     public FullTextSession createSession()  {
 
         EasyFullTextSource easyFullTextSource = new EasyFullTextSource(config);
-        return new EasySession(easyFullTextSource);
+        return new EasyFullTextSession(easyFullTextSource);
     }
 
 }

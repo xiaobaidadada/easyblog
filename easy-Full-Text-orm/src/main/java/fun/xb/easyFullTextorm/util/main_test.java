@@ -1,6 +1,6 @@
 package fun.xb.easyFullTextorm.util;
 
-import fun.xb.easyFullTextorm.service.EasySession;
+import fun.xb.easyFullTextorm.service.EasyFullTextSession;
 import fun.xb.easyFullTextorm.service.FullTextSession;
 import fun.xb.easyFullTextorm.service.datasource.EasyFullTextSource;
 import fun.xb.easyFullTextorm.service.datasource.sourConfig;
@@ -13,7 +13,7 @@ public class main_test {
         sourConfig s = new sourConfig();
         s.home_path="D:\\databases_data\\lucene";
         EasyFullTextSource source = new EasyFullTextSource(s);
-        FullTextSession session = new EasySession(source);
+        FullTextSession session = new EasyFullTextSession(source);
         dto query= new dto();
         query.a="666667";
 //        query.id=123L;

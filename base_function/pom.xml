@@ -23,6 +23,17 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java-dnspod</artifactId>
+            <version>3.1.749</version>
+        </dependency>
+        <dependency>
+            <groupId>fun.xb</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
         <!--Lucene依赖-->
         <!--        <dependency>-->
         <!--            <groupId>org.apache.lucene</groupId>-->
