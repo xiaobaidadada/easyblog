@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -56,6 +57,11 @@ public class blog_controller {
 
 
         model.addAttribute("blog",b);
+
+        SimpleDateFormat foemat = new SimpleDateFormat("YYYY-MM-dd");
+        String date = foemat.format(b.getTime_update());
+        model.addAttribute("time",date);
+
         return "blog";
     }
 

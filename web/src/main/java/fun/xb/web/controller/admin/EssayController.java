@@ -54,9 +54,10 @@ SqlSession session;
 //        String md_context = utils.regex(blog.getContext(),directory);
         blog.setContext_html(md_context);
         blog.setDirectory(directory.toString());
+        blog.setTime_update(System.currentTimeMillis());
 
         if(essay.getId()==-1){
-
+            blog.setTime_created(System.currentTimeMillis());
             blog.setClick(0);
             session.insert(blog);
             return Result.sucess(blog.getId());

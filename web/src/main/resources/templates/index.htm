@@ -17,9 +17,9 @@
     <script src="/js/index.js" type="module"></script>
 
     <!--    <link rel="stylesheet" href="/css/font-awesome-4.7.0/css/font-awesome.min.css">-->
-<style >
+<style th:utext="${css}">
 
-    [[${css}]]
+    /*[[}]]*/
 </style>
 </head>
 <body>
@@ -90,9 +90,9 @@
     </div>
 </div>
 
-<script>
+<script th:utext="${js}">
     
-    [[${js}]]
+    // [[${js}]]
 </script>
 
 </body>
