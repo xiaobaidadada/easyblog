@@ -89,9 +89,10 @@ public class index_controller {
     public Result gettypename(HttpServletRequest request, @RequestBody String body){
         JSONObject object=JSONObject.parseObject(body);
         int id= Integer.parseInt((String) object.get("id"));
-        List<blog_entity> list = session.select("select * from blog where type_id =? limit 0,6",blog_entity.class,id);
+        // 暂时不需要从这里加载列表数据了
+//        List<blog_entity> list = session.select("select * from blog where type_id =? limit 0,6",blog_entity.class,id);
         type_entity type = session.selectOne("select * from type where id = ?",type_entity.class,id);
-        Result result = Result.sucess(list);
+        Result result = Result.sucess();
         Map map = new HashMap();
         map.put("type",type.getType_name());
         result.setMap(map);

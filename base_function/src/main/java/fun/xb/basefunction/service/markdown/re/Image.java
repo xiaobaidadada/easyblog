@@ -21,7 +21,7 @@ public class Image {
             String quote = matcher.group();
             String context=matcher.group(1);
             String url=matcher.group(2);
-            String img="<img class=\"md_img\"/ src=\""+url+"  alt=\""+context+"\"/>";
+            String img="<img class=\"md_img\"/ src=\""+url+"\"  alt=\""+context+"\"/>";
             matcher.appendReplacement(sb, img);//这样的做法可以更为精细的处理每一个匹配
         }
 
