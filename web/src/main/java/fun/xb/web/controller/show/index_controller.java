@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/index")
@@ -44,16 +46,16 @@ public class index_controller {
     public Result getsomeblog(HttpServletRequest request, @RequestBody String body){
 
         JSONObject object=JSONObject.parseObject(body);
-        int index= (int) object.get("essay_index"),
+        int index= (int) object.get("essay_index")-1,
                 type= (int) object.get("essay_type");
 
         List<blog_entity> list = null;
         if(type == 0){
             //查全部
-          list =  session.select("select * from blog  limit ?,?",blog_entity.class,index,6);
+          list =  session.select("select * from blog order by id desc limit ?,?",blog_entity.class,index,6);
         }
         else{
-            list =  session.select("select * from blog where type_id =? limit ?,?",blog_entity.class,type,index,6);
+            list =  session.select("select * from blog where type_id =? order by id desc limit ?,?",blog_entity.class,type,index,6);
         }
 
 
@@ -88,8 +90,12 @@ public class index_controller {
         JSONObject object=JSONObject.parseObject(body);
         int id= Integer.parseInt((String) object.get("id"));
         List<blog_entity> list = session.select("select * from blog where type_id =? limit 0,6",blog_entity.class,id);
-
-        return Result.sucess(list);
+        type_entity type = session.selectOne("select * from type where id = ?",type_entity.class,id);
+        Result result = Result.sucess(list);
+        Map map = new HashMap();
+        map.put("type",type.getType_name());
+        result.setMap(map);
+        return result;
     }
 
 

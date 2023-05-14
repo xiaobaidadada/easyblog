@@ -100,7 +100,7 @@ function alert_me(message, type) {
     alertPlaceholder.appendChild(wrapper)
 }
 
-//点击文章
+//点击文章类型 加载不同类别的文章
 function essay_type_load(event){
 // console.log(event.currentTarget.id)//target只是触发的，可能不是自己的dom
      essay_type=event.currentTarget.id;
@@ -114,9 +114,9 @@ function essay_type_load(event){
         if (http.readyState == 4 && http.status == 200 ) {
 
             // alert(http.responseText+'成功')
-            let array=JSON.parse(http.responseText)['value'];
+            let map=JSON.parse(http.responseText)['map'];
 
-            document.querySelector("#essay > p").innerHTML=array;
+            document.querySelector("#essay > p").innerHTML=map['type'];
            essay_index=0;//文章篇数
             document.querySelector("#essay > div").innerHTML=""
             updateessay();//根据类型加载全部文章

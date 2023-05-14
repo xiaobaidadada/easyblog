@@ -3,6 +3,7 @@ package fun.xb.common.vo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 通用返回对象
@@ -70,6 +71,9 @@ public class Result<T>  {
         this.value=value;
     }
 
+    // 额外的信息
+    private Map<String,Object> map;
+
 
     public static <T> Result<T> sucess(){
         return new Result<>(true,1,"",null);
@@ -77,6 +81,12 @@ public class Result<T>  {
 
     public static <T> Result<T> sucess(T value){
         return new Result<>(true,1,"",value);
+    }
+
+    public static <T> Result<T> sucess(T value,Map<String,Object> map){
+        Result result =  new Result<>(true,1,"",value);
+        result.setMap(map);
+        return result;
     }
 
     public static <T> Result<T> fail(String smg){

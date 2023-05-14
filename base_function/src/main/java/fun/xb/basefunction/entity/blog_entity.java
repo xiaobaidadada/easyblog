@@ -17,7 +17,7 @@ public class blog_entity {
 
     String title;
 
-    @text_column
+//    @text_column
     String context;
 
     //转义成HTML的数据
