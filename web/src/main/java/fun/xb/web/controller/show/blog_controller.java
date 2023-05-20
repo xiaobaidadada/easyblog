@@ -59,7 +59,14 @@ public class blog_controller {
         model.addAttribute("blog",b);
 
         SimpleDateFormat foemat = new SimpleDateFormat("YYYY-MM-dd");
-        String date = foemat.format(b.getTime_update());
+        Long update_time = b.getTime_update();
+        String date = null;
+        if (update_time != null){
+            date = foemat.format(b.getTime_update());
+        } else {
+            date = "未发布时间";
+        }
+
         model.addAttribute("time",date);
 
         return "blog";
