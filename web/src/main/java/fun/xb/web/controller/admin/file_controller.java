@@ -99,7 +99,7 @@ public class file_controller {
                             )
                             .name(f.getName())
                             .url(
-                                    f.isFile() ? host + "file_public/show?file_name=" + file + f.getName() : host + "file/get_file_info?folder_name=" + f.getName()
+                                    f.isFile() ? host + "file_public/show?file_name=" + file + f.getName() : host + "file/get_file_info?folder_name=" + file+f.getName()
                             ));
                 }
 
