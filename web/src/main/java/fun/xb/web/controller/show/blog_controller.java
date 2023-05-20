@@ -5,6 +5,7 @@ import fun.xb.basefunction.constant.plug_enum_type;
 import fun.xb.basefunction.entity.blog_entity;
 import fun.xb.basefunction.entity.css_plug_entity;
 import fun.xb.basefunction.entity.js_plug_entity;
+import fun.xb.common.POJOUtil;
 import fun.xb.easySqlorm.service.SqlSession;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,17 @@ public class blog_controller {
     public String get(HttpServletRequest request, @PathVariable("id")int id, Model model){
         model.addAttribute("title","欧克");
         blog_entity b=session.selectOne("select * from blog where id = ?",blog_entity.class,id);
-        //临时处理
-        b.setContext(b.getContext_html());
+
+
 
         //todo 以后换成缓存静态队列，不在这里直接更新了
+        blog_entity blog = new blog_entity();
         b.setClick(b.getClick()+1);
-        session.updateById(b);
+        POJOUtil.copyProperties(b,blog);
+        session.updateById(blog);
+
+        //临时处理
+        b.setContext(b.getContext_html());
 
         List<js_plug_entity> js_list=session.select("select * from js_plug where on_off =? and type = ? ", js_plug_entity.class, blog_constant.plug_on, plug_enum_type.blog.getType());
         List<css_plug_entity> css_list=session.select("select * from css_plug where on_off=? and type = ? ", css_plug_entity.class,blog_constant.plug_on,plug_enum_type.blog.getType());

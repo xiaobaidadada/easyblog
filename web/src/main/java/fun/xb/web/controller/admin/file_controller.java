@@ -22,10 +22,10 @@ import java.util.List;
 public class file_controller {
 
     @Value("${easy.file.file_home_path}")
-    String file_path ;
+    String file_path;
 
     @PostMapping("/upload_images")
-    public Result publish_images(HttpServletRequest request, @RequestParam(value = "files", required = false) MultipartFile[] files, @RequestParam("path") String path) {
+    public Result publish_images(HttpServletRequest request, @RequestParam(value = "files", required = false) MultipartFile[] files, @RequestParam(value = "path", required = false) String path) {
 
 
         try {
@@ -87,15 +87,20 @@ public class file_controller {
             //获取所有的目录
             File[] files = dir.listFiles();
 
+            String file = folder_name == null ? "" : folder_name.equals("") ? "" : folder_name + "/";
             if (files != null)
                 for (File f : files) {
 //                System.out.println(f.getAbsolutePath());
 //                System.out.println(f.getName());
-                    vo_list.add(file_vo.build().file_type(
-                            f.isFile() ? 1 : 2
-                    ).name(f.getName()).url(
-                            f.isFile() ? host + "file_public/show?file_name=" + f.getName() : host + "file/get_file_info?folder_name=" + f.getName()
-                    ));
+
+                    vo_list.add(file_vo.build()
+                            .file_type(
+                                    f.isFile() ? 1 : 2
+                            )
+                            .name(f.getName())
+                            .url(
+                                    f.isFile() ? host + "file_public/show?file_name=" + file + f.getName() : host + "file/get_file_info?folder_name=" + f.getName()
+                            ));
                 }
 
         }
@@ -112,10 +117,7 @@ public class file_controller {
             if (files != null) {
                 for (file_vo vo : files) {
                     File file = new File(file_path + vo.url);
-//                    if(file.delete())
-//                        Result.sucess();
-//                    else
-//                        Result.fail();
+                    file.delete();
                 }
             }
         } catch (Exception e) {
