@@ -10,7 +10,7 @@ public class ItIalic {
 
     static String start="<em>";
     static   String tail="</em>";
-    private static final Pattern ITALIC_PATTERN = Pattern.compile("_(.+?)_");
+    private static final Pattern ITALIC_PATTERN = Pattern.compile("\\*(.+?)\\*");
 
     public static String mdBoldeparse(String markdown) {
         String html = markdown;

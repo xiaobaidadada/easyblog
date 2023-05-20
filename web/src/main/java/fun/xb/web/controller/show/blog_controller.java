@@ -64,7 +64,7 @@ public class blog_controller {
         if (update_time != null){
             date = foemat.format(b.getTime_update());
         } else {
-            date = "未发布时间";
+            date = "无";
         }
 
         model.addAttribute("time",date);
