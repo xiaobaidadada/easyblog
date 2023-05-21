@@ -127,5 +127,21 @@ public class file_controller {
         return Result.sucess();
     }
 
+    @PostMapping("/new")
+    public Result folder_new(HttpServletRequest request, @RequestBody file_vo file) {
+
+        File dir = new File(file_path + (file.url == null ? "" : file.url) +"/"+file.name );
+        try {
+            if(dir.mkdir()){
+                return Result.sucess();
+            } else {
+                return Result.fail();
+            }
+
+        } catch (Exception e) {
+            return Result.fail();
+        }
+    }
+
 
 }
